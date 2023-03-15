@@ -1,0 +1,14 @@
+vendor/
+storage/logs/
+.DS_Store
+/public/images/vendor/
+storage/framework/
+node_modules/
+public/mix-manifest.json
+storage/
+storage/logs/
+!.env
+!public/js/
+!public/css/
+public/mix-manifest.json
+!.gitignore
