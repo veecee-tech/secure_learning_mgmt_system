@@ -51,6 +51,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/dashboard/total-teachers', [DashboardController::class, 'getTotalTeachers']);
 
         
+        Route::get('/students', [StudentController::class, 'index']);
         Route::post('/student/create', [StudentController::class, 'store']);
         Route::get('/students/view/{id}', [StudentController::class, 'show']);
         Route::put('/students/update/{id}', [StudentController::class, 'update']);

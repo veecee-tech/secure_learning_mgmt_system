@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\StudentResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\BaseController;
+use OpenApi\Annotations as OA;
 
 class StudentController extends BaseController
 {
@@ -23,7 +24,7 @@ class StudentController extends BaseController
         $this->twilioSmsSender = $twilioSmsSender;
     }
 
-     public function generateStudentId()
+    public function generateStudentId()
     {
         $lastId = DB::table('users')->latest('id')->first();
         if ($lastId) {
@@ -34,11 +35,65 @@ class StudentController extends BaseController
 
         return $studentId;
     }
-    
+
+
+    //generate annotation for index method
+
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *    path="/api/admin/students",
+     *   summary="Get list of students",
+     * 
+     *  tags={"Admin Students"},
+     * 
+     * description="Get list of students",
+     * 
+     * operationId="getStudents",
      *
-     * @return \Illuminate\Http\Response
+     * @OA\Response(
+     *   response=200,
+     * description="Success",
+     * @OA\JsonContent(
+     * @OA\Property(
+     * property="success",  
+     * type="boolean",
+     * example=true
+     * ),
+     * @OA\Property(
+     * property="data",
+     * type="object",
+     * example={
+     * 
+     * {
+     * "id": 1,
+     * "student_id": "m000001",
+     * "first_name": "John",
+     * "last_name": "Doe",
+     * "other_name": "Doe",
+     * "email": "",
+     * "phone_number": "08012345678",
+     * "date_of_birth": "2021-01-01",
+     * "class_level_id": 1,
+     * "parent_id": 1,
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z",
+     * "class_level": {
+     * "id": 1,
+     * "name": "Primary 1",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * 
+     * 
+     * }
+     * }
+     * )
+     * )
+     * 
+     * ))))
+     *
+     *      
+     * 
      */
     public function index()
     {
@@ -46,17 +101,335 @@ class StudentController extends BaseController
 
         return StudentResource::collection(
             Student::all()
-            ->sortByDesc('created_at')
+                ->sortByDesc('created_at')
         );
-
     }
 
+    //generate annotation for getClassLevelList method
+    /**
+     * @OA\Get(
+     * 
+     * path="/api/admin/students/get-class-level-list",
+     * summary="Get list of class levels",
+     *  
+     * tags={"Admin Students"},
+     * 
+     * description="Get list of class levels",
+     * 
+     * operationId="getClassLevelList",
+     * 
+     * @OA\Response(
+     * response=200,
+     * description="Success",
+     * @OA\JsonContent(
+     * @OA\Property(
+     * property="success",
+     * type="boolean",
+     * example=true
+     * ),
+     * @OA\Property(
+     * property="data",
+     * type="object",
+     * example={
+     * {
+     * "id": 1,
+     * "name": "Primary 1",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * {
+     * "id": 2,
+     * "name": "Primary 2",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * {
+     * "id": 3,
+     * "name": "Primary 3",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * {
+     * "id": 4,
+     * "name": "Primary 4",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * 
+     * }
+     * 
+     * )
+     * 
+     * )
+     * 
+     * )
+     * 
+     * ),
+     * 
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * example="Unauthenticated."
+     * )
+     * )
+     * )
+     * 
+     * 
+     * 
+     * 
+     */
     public function getClassLevelList()
     {
         $classLevelList = ClassLevel::all();
         return $classLevelList;
     }
 
+
+    //generate annotation for store method
+    /**
+     * @OA\Post(
+     * 
+     * path="/api/admin/student/create",
+     * summary="Create a new student",
+     * 
+     * tags={"Admin Students"},
+     * 
+     * description="Create a new student",
+     * 
+     * operationId="createStudent",
+     * 
+     * @OA\RequestBody(
+     * required=true,
+     * description="Pass student details",
+     * @OA\JsonContent(
+     * required={"first_name","last_name","phone_number","date_of_birth","enrollment_status","class_level_id"},
+     * @OA\Property(
+     * property="first_name",
+     * type="string",
+     * example="John"
+     * ),
+     * @OA\Property(
+     * property="last_name",
+     * type="string",
+     * example="Doe"
+     * ),
+     * @OA\Property(
+     * property="other_name",
+     * type="string",
+     * example="Smith"
+     * ),
+     * @OA\Property(
+     * property="email",
+     * type="string",
+     * example=""
+     * ),
+     * @OA\Property(
+     * property="phone_number",
+     * type="string",
+     * example="08012345678"
+     * ),
+     * 
+     * @OA\Property(
+     * property="date_of_birth",
+     * type="string",
+     * example="2021-01-01"
+     * ),
+     * 
+     * @OA\Property(
+     * property="enrollment_status",
+     * type="string",
+     * example="New"
+     * ),
+     * 
+     * @OA\Property(
+     * property="class_level_id",
+     * type="integer",
+     * example=1
+     * ),
+     * 
+     * @OA\Property(
+     * property="parent_first_name",
+     * type="string",
+     * example="John"
+     * ),
+     * 
+     * @OA\Property(
+     * property="parent_last_name",
+     * type="string",
+     * example="Doe"
+     * ),
+     * 
+     * @OA\Property(
+     * property="parent_phone_number_1",
+     * type="string",
+     * example="08012345678"
+     * ),
+     * 
+     * @OA\Property(
+     * 
+     * property="parent_phone_number_2",
+     * type="string",
+     * example="08012345678"
+     * ),
+     *
+     * @OA\Property(
+     * property="parent_home_address",
+     * type="string",
+     * example="No 1, John Doe Street, Lagos"
+     * ),
+     * 
+     * @OA\Property(
+     * 
+     * property="parent_emergency_contact",
+     * type="string",
+     * example="08012345678"
+     * ),
+     * 
+     * @OA\Property(
+     * property="user_id",
+     * type="integer",
+     * example=1
+     * )
+     * 
+     * )
+     * ),
+     * 
+     * @OA\Response(
+     * response=201,
+     * description="Created",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * example="Student created successfully"
+     * ),
+     * 
+     * @OA\Property(
+     * property="student",
+     * type="object",
+     * example={
+     * "id": 1,
+     * "first_name": "John",
+     * "last_name": "Doe",
+     * "other_name": "Smith",
+     * "email": "",
+     * "phone_number": "08012345678",
+     * "date_of_birth": "2021-01-01",
+     * "enrollment_status": "New",
+     * "class_level_id": 1,
+     * "parent_first_name": "John",
+     * "parent_last_name": "Doe",
+     * "parent_phone_number_1": "08012345678",
+     * "parent_phone_number_2": "08012345678",
+     * "parent_home_address": "No 1, John Doe Street, Lagos",
+     * "parent_emergency_contact": "08012345678",
+     * "user_id": 1,
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * }
+     * 
+     * )
+     * )
+     * ),
+     * 
+     * @OA\Response(
+     * response=400,
+     * 
+     * description="Bad Request",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * example="The given data was invalid."
+     * ),
+     * 
+     * @OA\Property(
+     * property="errors",
+     * type="object",
+     * example={
+     * "first_name": {
+     * "The first name field is required."
+     * },
+     * "last_name": {
+     * "The last name field is required."
+     * },
+     * "phone_number": {
+     * "The phone number field is required."
+     * },
+     * "date_of_birth": {
+     * "The date of birth field is required."
+     * },
+     * "enrollment_status": {
+     * "The enrollment status field is required."
+     * },
+     * "class_level_id": {
+     * "The class level id field is required."
+     * }
+     * }
+     * 
+     * )
+     * )
+     * ),
+     * 
+     * @OA\Response(
+     * response=401,
+     * description="Unauthorized",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * 
+     * example="Unauthenticated."
+     * )
+     * 
+     * )
+     * ),
+     * 
+     * @OA\Response(
+     * response=403,
+     * description="Forbidden",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * 
+     * example="This action is unauthorized."
+     * )
+     * 
+     * )
+     * ),
+     * 
+     * @OA\Response(
+     * response=404,
+     * description="Not Found",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * 
+     * example="Not Found"
+     * )
+     * 
+     * )
+     * )
+     * 
+     * )
+     * 
+     * )
+     * 
+     * )
+     * 
+     */
 
     /**
      * Store a newly created resource in storage.
@@ -66,7 +439,7 @@ class StudentController extends BaseController
      */
     public function store(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
 
             'first_name' => ['required', 'string', 'max:255'],
@@ -103,7 +476,7 @@ class StudentController extends BaseController
             'phone_number' => $request->phone_number,
             'password' => Hash::make($random_password),
         ]);
-        
+
         $user->role = 'student';
         $user->save();
 
@@ -146,9 +519,45 @@ class StudentController extends BaseController
         ];
 
         return $this->sendResponse($success, 'Student created successfully.');
-
     }
 
+  //generate annotation for the show() method (GET /students/{id})
+  /**
+   * @OA\Get(
+   * path="/api/students/view/{id}",
+   * summary="View student",
+   * description="View student",
+   * operationId="viewStudent",
+   * tags={"Students"},
+   * security={{"bearerAuth":{}}},
+   * 
+   * @OA\Parameter(
+   * name="id",
+   * in="path",
+   * description="Student ID",
+   * required=true,
+   * @OA\Schema(
+   * type="integer",
+   * format="int64"
+   * )
+   * ),
+   * 
+   * @OA\Response(
+   * response=200,
+   * description="Success",
+   * @OA\JsonContent(
+   * 
+   * @OA\Property(
+   * property="success",
+   * type="object")
+   * 
+   * )
+   * )
+   * 
+   * )
+   * 
+   * )
+   */
     /**
      * Display the specified resource.
      *
@@ -162,8 +571,8 @@ class StudentController extends BaseController
         $student = User::with(
             'student'
         )
-        ->where('id', $id)
-        ->first();
+            ->where('id', $id)
+            ->first();
 
         $success['id'] = $student->student->id;
         $success['student_id'] = $student->username;
@@ -171,7 +580,6 @@ class StudentController extends BaseController
         $success['class'] = $student->student->classLevel->name;
 
         return $this->sendResponse($success, 'Student retrieved successfully.');
-
     }
 
     /**
@@ -214,8 +622,8 @@ class StudentController extends BaseController
 
         $deleted = $studentToDelete->delete();
 
-        return $deleted ? 
-            $this->sendResponse($deleted, 'Student deleted successfully.') : 
+        return $deleted ?
+            $this->sendResponse($deleted, 'Student deleted successfully.') :
             $this->sendError('Student not deleted ecause it is dependent on other model.');
     }
 
@@ -227,7 +635,7 @@ class StudentController extends BaseController
         $handle = fopen($filename, 'w+');
         fputcsv($handle, array('Student ID', 'Fullname', 'Class'));
 
-        foreach($students as $student) {
+        foreach ($students as $student) {
             fputcsv($handle, array($student->user->username, $student->getFullnameAttribute(), $student->classLevel()->first()->name));
         }
 

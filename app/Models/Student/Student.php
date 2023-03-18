@@ -20,7 +20,7 @@ class Student extends Model
         'phone_number',
         'date_of_birth',
         'enrollment_status',
-        'class',
+        'class_level_id',
         'parent_first_name',
         'parent_last_name',
         'parent_phone_number_1',
