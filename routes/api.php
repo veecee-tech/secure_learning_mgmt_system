@@ -45,14 +45,14 @@ Route::middleware('auth:api')->group(function () {
     });
 
     //create route for admin
-    Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    Route::group(['prefix' => 'admin'], function () {
         
         Route::get('/dashboard/total-students', [DashboardController::class, 'getTotalStudents']);
         Route::get('/dashboard/total-teachers', [DashboardController::class, 'getTotalTeachers']);
 
         
         Route::get('/students', [StudentController::class, 'index']);
-        Route::post('/student/create', [StudentController::class, 'store']);
+        Route::post('/create-student', [StudentController::class, 'store']);
         Route::get('/students/view/{id}', [StudentController::class, 'show']);
         Route::put('/students/update/{id}', [StudentController::class, 'update']);
         Route::delete('/students/delete/{id}', [StudentController::class, 'destroy']);
