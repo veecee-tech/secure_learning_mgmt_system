@@ -14,6 +14,133 @@ use App\Http\Resources\TeacherResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\BaseController;
 
+
+
+
+
+// generate annotation for store method
+/**
+ * 
+ * @OA\Post(
+ * 
+ * path="/api/admin/create-teacher",
+ * summary="Create a new teacher",
+ * description="Create a new teacher",
+ * operationId="store",
+ * tags={"Teachers"},
+ * @OA\RequestBody(
+ *   required=true,
+ *  description="Pass teacher details",
+ * @OA\JsonContent(
+ * required={"first_name","last_name","phone_number","date_of_birth","enrollment_status","class_level_id"},
+ * @OA\Property(property="first_name", type="string", example="John"),
+ * @OA\Property(property="last_name", type="string", example="Doe"),
+ * @OA\Property(property="other_name", type="string", example="Doe"),
+ * @OA\Property(property="email", type="string", example="",),
+ * @OA\Property(property="phone_number", type="string", example="08012345678"),
+ * @OA\Property(property="date_of_birth", type="string", example="2021-03-01"),
+ * @OA\Property(property="enrollment_status", type="string", example="active"),
+ * @OA\Property(property="class_level_id", type="integer", example=1),
+ * @OA\Property(property="parent_first_name", type="string", example="John"),
+ * @OA\Property(property="parent_last_name", type="string", example="Doe"),
+ * @OA\Property(
+ *                 property="parent_phone_number_1",
+ *                 type="string",
+ *                 example="08012345678"
+ *             ),
+ *             @OA\Property(
+ *                 property="parent_phone_number_2",
+ *                 type="string",
+ *                 example="08012345678"
+ *             ),
+ *             @OA\Property(
+ *                 property="parent_home_address",
+ *                 type="string",
+ *                 example="No 1, John Doe Street, Lagos"
+ *             ),
+ *             @OA\Property(
+ *                 property="parent_emergency_contact",
+ *                 type="string",
+ *                 example="08012345678"
+ *             ),
+ *         )
+ *     ),
+ * @OA\Response(
+ *   response=201,
+ * description="Created",
+ * @OA\JsonContent(
+ *   @OA\Property(property="data", type="object",
+ * example={
+ * {
+ * "id": 1,
+ * "teacher_id": "T000001",
+ * "first_name": "John",
+ * "last_name": "Doe",
+ * "other_name": "Doe",
+ * "email": "",
+ * "phone_number": "08012345678",
+ * "class_level_id": 1,
+ * "class_level": {
+ * "id": 1,
+ * "name": "JSS 1"
+ * },
+ * "created_at": "2021-03-01T12:00:00.000000Z",
+ * "updated_at": "2021-03-01T12:00:00.000000Z"
+ * 
+ * 
+ * }
+ * },
+ * 
+ * )
+ * ),
+ * @OA\Response(
+ *  response=422,
+ * description="Unprocessable Entity",
+ * @OA\JsonContent(
+ *  @OA\Property(property="message", type="string", example="The given data was invalid."),
+ * @OA\Property(property="errors", type="object",
+ * example={
+ * {
+ * "first_name": {
+ * "The first name field is required."
+ * }
+ * },
+ * {
+ * "last_name": {
+ * "The last name field is required."
+ * }
+ * },
+ * {
+ * "phone_number": {
+ * "The phone number field is required."
+ * }
+ * },
+ * {
+ * "date_of_birth": {
+ * "The date of birth field is required."
+ * }
+ * },
+ * {
+ * "enrollment_status": {
+ * "The enrollment status field is required."
+ * }
+ * },
+ * {
+ * "class_level_id": {
+ * "The class level id field is required."
+ * }
+ * }
+ * }
+ * )
+ * )
+ * )
+ * )
+ * )
+ *
+ * 
+ * 
+ * 
+ */
 class TeacherController extends BaseController
 {
     //
@@ -25,33 +152,155 @@ class TeacherController extends BaseController
         $this->twilioSmsSender = $twilioSmsSender;
     }
 
-     public function generateTeacherId()
-     {
-            $lastId = DB::table('users')->latest('id')->first();
-            if ($lastId) {
-                $teacherId = "T" . str_pad($lastId->id + 1, 6, '0', STR_PAD_LEFT);
-            } else {
-                $teacherId = "T000001";
-            }
-    
-            return $teacherId;
-     }
+    public function generateTeacherId()
+    {
+        $lastId = DB::table('users')->latest('id')->first();
+        if ($lastId) {
+            $teacherId = "T" . str_pad($lastId->id + 1, 6, '0', STR_PAD_LEFT);
+        } else {
+            $teacherId = "T000001";
+        }
 
+        return $teacherId;
+    }
 
-
+    // generate annotation for index method
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     * 
+     * path="/api/admin/teachers",
+     * summary="Get list of teachers",
+     * description="Get list of teachers",
+     * operationId="getTeachers",
+     * tags={"Teachers"},
+     * @OA\Response(
+     *   response=200,
+     * description="Success",
+     * @OA\JsonContent(
+     * @OA\Property(
+     * property="success",  
+     * type="boolean",
+     * example=true
+     * ),
+     * @OA\Property(
+     * property="data",
+     * type="object",
+     * example={
+     * 
+     * {
+     * "id": 1,
+     * "student_id": "m000001",
+     * "first_name": "John",
+     * "last_name": "Doe",
+     * "other_name": "Doe",
+     * "email": "",
+     * "phone_number": "08012345678",
+     * "date_of_birth": "2021-01-01",
+     * "class_level_id": 1,
+     * "parent_id": 1,
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z",
+     * "class_level": {
+     * "id": 1,
+     * "name": "Primary 1",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * 
+     * 
+     * }
+     * }
+     * )
+     * )
+     * 
+     * ))))
      *
-     * @return \Illuminate\Http\Response
-     */ 
+     *      
+     * 
+     */
     public function index()
     {
         //
         return TeacherResource::collection(
             Teacher::all()
-            ->sortByDesc('created_at')
+                ->sortByDesc('created_at')
         );
     }
+
+    /**
+     * 
+     * @OA\Get(
+     * 
+     * path="/api/admin/teachers/get-class-level-list",
+     * summary="Get list of class levels",
+     * description="Get list of class levels",
+     * operationId="getClassLevelListeachers",
+     * tags={"Teachers"},
+     * @OA\Response(
+     * response=200,
+     * description="Success",
+     * @OA\JsonContent(
+     * @OA\Property(
+     * property="success",
+     * type="boolean",
+     * example=true
+     * ),
+     * @OA\Property(
+     * property="data",
+     * type="object",
+     * example={
+     * {
+     * "id": 1,
+     * "name": "Primary 1",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * {
+     * "id": 8,
+     * "name": "Primary 2",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * {
+     * "id": 3,
+     * "name": "Primary 3",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * {
+     * "id": 9,
+     * "name": "Primary 4",
+     * "created_at": "2021-01-01T00:00:00.000000Z",
+     * "updated_at": "2021-01-01T00:00:00.000000Z"
+     * },
+     * 
+     * }
+     * 
+     * )
+     * 
+     * )
+     * 
+     * )
+     * 
+     * ),
+     * 
+     * @OA\Response(
+     * response=422,
+     * description="Unauthenticated",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * example="Unauthenticated User."
+     * )
+     * )
+     * )
+     * 
+     * 
+     * 
+     * 
+     */
 
     public function getClassLevelList()
     {
@@ -79,35 +328,37 @@ class TeacherController extends BaseController
      */
     public function store(Request $request)
     {
-        
-        $validatedData = Validator::make($request->all(), [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'other_name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
-            'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
-            'date_of_birth' => ['required', 'date'],
-            'enrollment_status' => ['required'],
-            'class_level_id' => ['required'],
-            'parent_first_name' => ['nullable', 'string', 'max:255'],
-            'parent_last_name' => ['nullable', 'string', 'max:255'],
-            'parent_phone_number_1' => ['nullable', 'string', 'max:255'],
-            'parent_phone_number_2' => ['nullable', 'string', 'max:255'],
-            'parent_home_address' => ['nullable', 'string', 'max:255'],
-            'parent_emergency_contact' => ['nullable', 'string', 'max:255'],
 
-            
-        ],
-        $message = [
-            'first_name.required' => 'First name is required',
-            'last_name.required' => 'Last name is required',
-            'phone_number.required' => 'Phone number is required',
-            'date_of_birth.required' => 'Date of birth is required',
-            'enrollment_status.required' => 'Enrollment status is required',
-            'class_level_id.required' => 'Class level is required',
-        ]
+        $validatedData = Validator::make(
+            $request->all(),
+            [
+                'first_name' => ['required', 'string', 'max:255'],
+                'last_name' => ['required', 'string', 'max:255'],
+                'other_name' => ['nullable', 'string', 'max:255'],
+                'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
+                'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
+                'date_of_birth' => ['required', 'date'],
+                'enrollment_status' => ['required'],
+                'class_level_id' => ['required'],
+                'parent_first_name' => ['nullable', 'string', 'max:255'],
+                'parent_last_name' => ['nullable', 'string', 'max:255'],
+                'parent_phone_number_1' => ['nullable', 'string', 'max:255'],
+                'parent_phone_number_2' => ['nullable', 'string', 'max:255'],
+                'parent_home_address' => ['nullable', 'string', 'max:255'],
+                'parent_emergency_contact' => ['nullable', 'string', 'max:255'],
 
-    );
+
+            ],
+            $message = [
+                'first_name.required' => 'First name is required',
+                'last_name.required' => 'Last name is required',
+                'phone_number.required' => 'Phone number is required',
+                'date_of_birth.required' => 'Date of birth is required',
+                'enrollment_status.required' => 'Enrollment status is required',
+                'class_level_id.required' => 'Class level is required',
+            ]
+
+        );
 
         if ($validatedData->fails()) {
             return $this->sendError('Validation Error.', $validatedData->errors());
@@ -123,7 +374,7 @@ class TeacherController extends BaseController
             'phone_number' => $request->phone_number,
             'password' => Hash::make($random_password),
         ]);
-        
+
         $user->role = 'teacher';
         $user->save();
 
@@ -171,8 +422,8 @@ class TeacherController extends BaseController
             'enabled' => true
         ]);
 
-         //send sms to student
-         $this->twilioSmsSender->sendOTP(
+        //send sms to student
+        $this->twilioSmsSender->sendOTP(
             $request->phone_number,
             "Your username is $username and password is $random_password"
         );
@@ -184,15 +435,50 @@ class TeacherController extends BaseController
         ];
 
         return $this->sendResponse($success, 'Teacher created successfully.');
-
     }
 
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/api/admin/teacher/view/{id}",
+     *    summary="Get teacher by id",
+     *    tags={"Teachers"},
+     *   description="Get teacher by id",
+     *  operationId="showTeacher",
+     *    @OA\Parameter(
+     *        name="id",
+     *       in="path",
+     *      required=true,
+     *     @OA\Schema(
+     *         type="integer"
+     *    )
+     * ),
+     * @OA\Response(
+     *   response=200,
+     *  description="Successful operation",
+     * @OA\JsonContent(
+     *     @OA\Property(property="success", type="boolean"),
+     *    @OA\Property(property="message", type="string"),
+     *  @OA\Property(
+     *     property="data",
+     *   type="object",
+     * @OA\Property(property="id", type="integer"),
+     * @OA\Property(property="teacher_id", type="string"),
+     * @OA\Property(property="fullname", type="string"),
+     * @OA\Property(property="class", type="string"),
+     * )
+     * )
+     * ),
+     * @OA\Response(
+     *  response=404,
+     * description="Not found"
+     * )
+     *  
+     * 
+     * 
+     * )
+     * )
+     * )
      */
     public function show($id)
     {
@@ -200,8 +486,8 @@ class TeacherController extends BaseController
         $teacher = User::with(
             'teacher'
         )
-        ->where('id', $id)
-        ->first();        
+            ->where('id', $id)
+            ->first();
         $success['id'] = $teacher->teacher->id;
         $success['teacher_id'] = $teacher->username;
         $success['fullname'] = $teacher->teacher->getFullnameAttribute();
@@ -238,10 +524,47 @@ class TeacherController extends BaseController
 
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *    path="/api/admin/teachers/delete/{id}",
+     *   summary="Delete teacher by id",
+     * tags={"Teachers"},
+     * description="Delete teacher by id",
+     * operationId="deleteTeacher",
+     * @OA\Parameter(
+     *       name="id",
+     *     in="path",
+     *   required=true,
+     * @OA\Schema(
+     *      type="integer"
+     * )
+     * ),
+     * 
+     * @OA\Response(
+     *   response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(
+     *   @OA\Property(property="success", type="boolean"),
+     * @OA\Property(property="message", type="string"),
+     * @OA\Property(
+     *     property="data",
+     *  type="object",
+     * @OA\Property(property="id", type="integer"),
+     * @OA\Property(property="teacher_id", type="string"),
+     * @OA\Property(property="fullname", type="string"),
+     * @OA\Property(property="class", type="string"),
+     * )
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Not found"
+     * )
+     * )
+     * )
+     * )
+     * )
+     * )
+     * )
      */
     public function destroy($id)
     {
@@ -250,10 +573,46 @@ class TeacherController extends BaseController
 
         $deleted = $teacherToDelete->delete();
 
-        return $deleted ? 
-            $this->sendResponse($deleted, 'Teacher deleted successfully.') : 
+        return $deleted ?
+            $this->sendResponse($deleted, 'Teacher deleted successfully.') :
             $this->sendError('Teacher not deleted ecause it is dependent on other model.');
     }
+
+    //generate annotation for the downloadTeacherList method
+    /**
+     * @OA\Get(
+     *    path="/api/admin/teachers/download",
+     *   summary="Download teacher list",
+     * tags={"Teachers"},
+     * description="Download teacher list",
+     * operationId="downloadTeacherList",
+     * @OA\Response(
+     *   response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(
+     *   @OA\Property(property="success", type="boolean"),
+     * @OA\Property(property="message", type="string"),
+     * @OA\Property(
+     *     property="data",
+     *  type="object",
+     * @OA\Property(property="id", type="integer"),
+     * @OA\Property(property="teacher_id", type="string"),
+     * @OA\Property(property="fullname", type="string"),
+     * @OA\Property(property="class", type="string"),
+     * )
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Not found"
+     * )
+     * )
+     * )
+     * )
+     * )
+     * )
+     * )
+     */
 
     public function downloadTeacherList()
     {
@@ -263,7 +622,7 @@ class TeacherController extends BaseController
         $handle = fopen($filename, 'w+');
         fputcsv($handle, array('Teacher ID', 'Fullname', 'Class'));
 
-        foreach($teachers as $teacher) {
+        foreach ($teachers as $teacher) {
             fputcsv($handle, array($teacher->user->username, $teacher->getFullnameAttribute(), $teacher->classLevel()->first()->name));
         }
 

@@ -61,7 +61,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/students/get-class-level-list', [StudentController::class, 'getClassLevelList']);
 
        
-        Route::post('/teacher/create', [TeacherController::class, 'store']);
+        Route::post('/create-teacher', [TeacherController::class, 'store']);
         Route::get('/teachers/view/{id}', [TeacherController::class, 'show']);
         Route::put('/teachers/update/{id}', [TeacherController::class, 'update']);
         Route::delete('/teachers/delete/{id}', [TeacherController::class, 'destroy']);

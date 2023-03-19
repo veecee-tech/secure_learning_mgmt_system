@@ -19,7 +19,7 @@ use OpenApi\Annotations as OA;
      * @OA\Post(
      *     path="/api/admin/create-student",
      *     summary="Create a new student",
-     *     tags={"Authentication"},
+     *     tags={"Students"},
      *     description="Create a new student",
      *     operationId="createStudent",
      *     @OA\RequestBody(
@@ -106,11 +106,6 @@ use OpenApi\Annotations as OA;
      *                 type="string",
      *                 example="08012345678"
      *             ),
-     *             @OA\Property(
-     *                 property="user_id",
-     *                 type="integer",
-     *                 example=1
-     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -135,7 +130,6 @@ use OpenApi\Annotations as OA;
      *      "date_of_birth": "2021-01-01",
      * "enrollment_status": "New",
      * "class_level_id": 1,
-     * "user_id": 1,
      * "created_at": "2021-01-01T00:00:00.000000Z",
      * "updated_at": "2021-01-01T00:00:00.000000Z"
      * }
@@ -194,7 +188,7 @@ class StudentController extends BaseController
      *    path="/api/admin/students",
      *   summary="Get list of students",
      * 
-     *  tags={"Admin Students"},
+     *  tags={"Students"},
      * 
      * description="Get list of students",
      * 
@@ -262,7 +256,7 @@ class StudentController extends BaseController
      * path="/api/admin/students/get-class-level-list",
      * summary="Get list of class levels",
      *  
-     * tags={"Admin Students"},
+     * tags={"Students"},
      * 
      * description="Get list of class levels",
      * 
@@ -467,12 +461,6 @@ class StudentController extends BaseController
      * 
      * )
      */
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
@@ -517,10 +505,40 @@ class StudentController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     * path="/api/students/delete/{id}",
+     * summary="Delete student",
+     * description="Delete student",
+     * operationId="deleteStudent",
+     * tags={"Students"},
+     * security={{"bearerAuth":{}}},
+     * 
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * description="Student ID",
+     * required=true,
+     * @OA\Schema(
+     * type="integer",
+     * format="int64"
+     * )
+     * ),
+     * 
+     * @OA\Response(
+     * response=200,
+     * description="Success",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="success",
+     * type="object")
+     * 
+     * )
+     * )
+     * 
+     * )
+     * 
+     * )
      */
     public function destroy($id)
     {
@@ -535,6 +553,34 @@ class StudentController extends BaseController
             $this->sendResponse($deleted, 'Student deleted successfully.') :
             $this->sendError('Student not deleted ecause it is dependent on other model.');
     }
+
+  
+    //generate annotation for the downloadStudentList() method (GET /students/download)
+    /**
+     * @OA\Get(
+     * path="/api/students/download",
+     * summary="Download student list",
+     * description="Download student list",
+     * operationId="downloadStudentList",
+     * tags={"Students"},
+     * security={{"bearerAuth":{}}},
+     * 
+     * @OA\Response(
+     * response=200,
+     * description="Success",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="success",
+     * type="object")
+     * 
+     * )
+     * )
+     * 
+     * )
+     * 
+     * )
+     */
 
     public function downloadStudentList()
     {
