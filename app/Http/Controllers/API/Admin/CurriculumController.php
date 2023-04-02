@@ -331,8 +331,8 @@ class CurriculumController extends BaseController
  
     /**
      * @OA\Get(
-     *    path="/api/admin/subject/all",
-     *  summary="Get all subjects and topics",
+     *    path="/api/admin/subjects/all",
+     *  summary="Get all subjects, and topics",
      * tags={"Curriculum"},
      * @OA\Response(
      * response=200,
