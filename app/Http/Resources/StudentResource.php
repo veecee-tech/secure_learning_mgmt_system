@@ -30,7 +30,7 @@ class StudentResource extends JsonResource
             'date_of_birth' => $this->date_of_birth,
             'enrollment_status' => $this->enrollment_status,
             'user_id' => $this->user_id,
-            'class' => $this->classLevel->name,
+            'class' => $this->classLevel ? $this->classLevel : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

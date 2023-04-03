@@ -39,7 +39,7 @@ Route::get('/users', function () {
     return response()->json($users);
 });
 
-Route::middleware('auth:api')->group(function () {
+// Route::middleware('auth:api')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
@@ -80,7 +80,7 @@ Route::middleware('auth:api')->group(function () {
 
         Route::get('subjects/all', [CurriculumController::class, 'allSubjects']);
 
-    });
+    // });
 
     //create route for teacher
     Route::group(['prefix' => 'teacher', 'namespace' => 'Teacher'], function () {

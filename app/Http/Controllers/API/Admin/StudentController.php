@@ -427,7 +427,7 @@ class StudentController extends BaseController
     //generate annotation for the show() method (GET /students/{id})
     /**
      * @OA\Get(
-     * path="/api/students/view/{id}",
+     * path="/api/admin/students/view/{id}",
      * summary="View student",
      * description="View student",
      * operationId="viewStudent",
@@ -471,10 +471,10 @@ class StudentController extends BaseController
             ->where('id', $id)
             ->first();
 
-        $success['id'] = $student->student->id;
+        $success['id'] = $student->student;
         $success['student_id'] = $student->username;
         $success['fullname'] = $student->student->getFullnameAttribute();
-        $success['class'] = $student->student->classLevel->name;
+        $success['class'] = $student->student->classLevel;
 
         return $this->sendResponse($success, 'Student retrieved successfully.');
     }
@@ -506,7 +506,7 @@ class StudentController extends BaseController
 
     /**
      * @OA\Delete(
-     * path="/api/students/delete/{id}",
+     * path="/api/admin/students/delete/{id}",
      * summary="Delete student",
      * description="Delete student",
      * operationId="deleteStudent",
@@ -558,7 +558,7 @@ class StudentController extends BaseController
     //generate annotation for the downloadStudentList() method (GET /students/download)
     /**
      * @OA\Get(
-     * path="/api/students/download",
+     * path="/api/admin/students/download",
      * summary="Download student list",
      * description="Download student list",
      * operationId="downloadStudentList",
