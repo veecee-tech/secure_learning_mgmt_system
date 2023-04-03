@@ -5,15 +5,17 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.0.7",
         "darkaonline/l5-swagger": "^8.5",
         "doctrine/dbal": "^3.6",
+        "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/contracts": "^9.51",
         "laravel/framework": "^9.2",
         "laravel/passport": "^11.6",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "symfony/polyfill-mbstring": "^1.27",
         "twilio/sdk": "^6.44"
     },
     "require-dev": {
