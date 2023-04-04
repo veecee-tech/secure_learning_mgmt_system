@@ -343,28 +343,28 @@ class StudentController extends BaseController
     public function store(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
+        // $validator = Validator::make($request->all(), [
 
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'other_name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
-            'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
-            'date_of_birth' => ['required', 'date'],
-            'enrollment_status' => ['required'],
-            'class_level_id' => ['required'],
-            'parent_first_name' => ['nullable', 'string', 'max:255'],
-            'parent_last_name' => ['nullable', 'string', 'max:255'],
-            'parent_phone_number_1' => ['nullable', 'string', 'max:255'],
-            'parent_phone_number_2' => ['nullable', 'string', 'max:255'],
-            'parent_home_address' => ['nullable', 'string', 'max:255'],
-            'parent_emergency_contact' => ['nullable', 'string', 'max:255'],
+        //     'first_name' => ['required', 'string', 'max:255'],
+        //     'last_name' => ['required', 'string', 'max:255'],
+        //     'other_name' => ['nullable', 'string', 'max:255'],
+        //     'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
+        //     'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
+        //     'date_of_birth' => ['required', 'date'],
+        //     'enrollment_status' => ['required'],
+        //     'class_level_id' => ['required'],
+        //     'parent_first_name' => ['nullable', 'string', 'max:255'],
+        //     'parent_last_name' => ['nullable', 'string', 'max:255'],
+        //     'parent_phone_number_1' => ['nullable', 'string', 'max:255'],
+        //     'parent_phone_number_2' => ['nullable', 'string', 'max:255'],
+        //     'parent_home_address' => ['nullable', 'string', 'max:255'],
+        //     'parent_emergency_contact' => ['nullable', 'string', 'max:255'],
 
-        ]);
+        // ]);
 
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
+        // if ($validator->fails()) {
+        //     return $this->sendError('Validation Error.', $validator->errors());
+        // }
 
 
         //create new user with role student and auto generate password and auto generated username
@@ -410,10 +410,10 @@ class StudentController extends BaseController
         ]);
 
         //send sms to student
-        $this->twilioSmsSender->sendOTP(
-            $request->phone_number,
-            "Your username is $username and password is $random_password"
-        );
+        // $this->twilioSmsSender->sendOTP(
+        //     $request->phone_number,
+        //     "Your username is $username and password is $random_password"
+        // );
 
         $success = [
             'username' => $username,

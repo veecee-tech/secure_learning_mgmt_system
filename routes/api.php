@@ -39,7 +39,7 @@ Route::get('/users', function () {
     return response()->json($users);
 });
 
-Route::middleware('auth:api')->group(function () {
+// Route::middleware('auth:api')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
@@ -92,4 +92,4 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/two-step-verification', [SecurityController::class, 'setTwoStepVerification']);
     });
 
-});
+// });
