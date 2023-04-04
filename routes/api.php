@@ -54,7 +54,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/students', [StudentController::class, 'index']);
         Route::post('/create-student', [StudentController::class, 'store']);
         Route::get('/students/view/{id}', [StudentController::class, 'show']);
-        Route::put('/students/update/{id}', [StudentController::class, 'update']);
+        Route::patch('/students/update/{id}', [StudentController::class, 'update']);
         Route::delete('/students/delete/{id}', [StudentController::class, 'destroy']);
         //download student list
         Route::get('/students/download', [StudentController::class, 'downloadStudentList']);
@@ -63,7 +63,7 @@ Route::middleware('auth:api')->group(function () {
        
         Route::post('/create-teacher', [TeacherController::class, 'store']);
         Route::get('/teachers/view/{id}', [TeacherController::class, 'show']);
-        Route::put('/teachers/update/{id}', [TeacherController::class, 'update']);
+        Route::patch('/teachers/update/{id}', [TeacherController::class, 'update']);
         Route::delete('/teachers/delete/{id}', [TeacherController::class, 'destroy']);
         //download teacher list
         Route::get('/teachers/download', [TeacherController::class, 'downloadTeacherList']);

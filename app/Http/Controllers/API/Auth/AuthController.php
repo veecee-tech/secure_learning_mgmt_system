@@ -175,6 +175,7 @@ class AuthController extends BaseController
             $success['token'] = $token;
             $success['username'] = $user->username;
             $success['phone_number'] = $user->phone_number;
+            $success['role'] = $user->role;
 
             return $this->sendResponse($success, 'User logged in successfully.');
 

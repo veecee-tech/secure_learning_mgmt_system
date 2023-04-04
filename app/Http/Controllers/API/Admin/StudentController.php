@@ -15,149 +15,308 @@ use App\Http\Controllers\API\BaseController;
 use OpenApi\Annotations as OA;
 
 
-    /**
-     * @OA\Post(
-     *     path="/api/admin/create-student",
-     *     summary="Create a new student",
-     *     tags={"Students"},
-     *     description="Create a new student",
-     *     operationId="createStudent",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         description="Pass student details",
-     *         @OA\JsonContent(
-     *             required={
-     *                 "first_name",
-     *                 "last_name",
-     *                 "phone_number",
-     *                 "date_of_birth",
-     *                 "enrollment_status",
-     *                 "class_level_id"
-     *             },
-     *             @OA\Property(
-     *                 property="first_name",
-     *                 type="string",
-     *                 example="John"
-     *             ),
-     *             @OA\Property(
-     *                 property="last_name",
-     *                 type="string",
-     *                 example="Doe"
-     *             ),
-     *             @OA\Property(
-     *                 property="other_name",
-     *                 type="string",
-     *                 example="Smith"
-     *             ),
-     *             @OA\Property(
-     *                 property="email",
-     *                 type="string",
-     *                 example=""
-     *             ),
-     *             @OA\Property(
-     *                 property="phone_number",
-     *                 type="string",
-     *                 example="08012345678"
-     *             ),
-     *             @OA\Property(
-     *                 property="date_of_birth",
-     *                 type="string",
-     *                 format="date",
-     *                 example="2021-01-01"
-     *             ),
-     *             @OA\Property(
-     *                 property="enrollment_status",
-     *                 type="string",
-     *                 enum={"New", "Enrolled"},
-     *                 example="New"
-     *             ),
-     *             @OA\Property(
-     *                 property="class_level_id",
-     *                 type="integer",
-     *                 example=1
-     *             ),
-     *             @OA\Property(
-     *                 property="parent_first_name",
-     *                 type="string",
-     *                 example="Jane"
-     *             ),
-     *             @OA\Property(
-     *                 property="parent_last_name",
-     *                 type="string",
-     *                 example="Doe"
-     *             ),
-     *             @OA\Property(
-     *                 property="parent_phone_number_1",
-     *                 type="string",
-     *                 example="08012345678"
-     *             ),
-     *             @OA\Property(
-     *                 property="parent_phone_number_2",
-     *                 type="string",
-     *                 example="08012345678"
-     *             ),
-     *             @OA\Property(
-     *                 property="parent_home_address",
-     *                 type="string",
-     *                 example="No 1, John Doe Street, Lagos"
-     *             ),
-     *             @OA\Property(
-     *                 property="parent_emergency_contact",
-     *                 type="string",
-     *                 example="08012345678"
-     *             ),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Created",
-     *         @OA\JsonContent(
-     *             @OA\Property(
-     *                 property="message",
-     *                 type="string",
-     *                 example="Student created successfully"
-     *             ),
-     *             @OA\Property(
-     *                 property="student",
-     *                 type="object",
-     *                  example={
-     *                     "id": 1,
-     *                    "first_name": "John",
-     *                   "last_name": "Doe",
-     *                 "other_name": "Smith",
-     *              "email": null,
-     *          "phone_number": "08012345678",
-     *      "date_of_birth": "2021-01-01",
-     * "enrollment_status": "New",
-     * "class_level_id": 1,
-     * "created_at": "2021-01-01T00:00:00.000000Z",
-     * "updated_at": "2021-01-01T00:00:00.000000Z"
-     * }
-     * )
-     * )
-     * ),
-     * @OA\Response(
-     * response=400,
-     * description="Bad Request",
-     * @OA\JsonContent(
-     * @OA\Property(
-     * property="message",
-     * type="string",
-     * example="The given data was invalid."
-     * ),
-     * @OA\Property(
-     * property="errors",
-     * type="object",
-     * example="Invalid data"
-     * )
-     * )
-     * )
-     * )
-     * )
-     * )
-     * )
-     * )
-     */ 
+/**
+ * @OA\Post(
+ *     path="/api/admin/create-student",
+ *     summary="Create a new student",
+ *     tags={"Students"},
+ *     description="Create a new student",
+ *     operationId="createStudent",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         description="Pass student details",
+ *         @OA\JsonContent(
+ *             required={
+ *                 "first_name",
+ *                 "last_name",
+ *                 "phone_number",
+ *                 "date_of_birth",
+ *                 "enrollment_status",
+ *                 "class_level_id"
+ *             },
+ *             @OA\Property(
+ *                 property="first_name",
+ *                 type="string",
+ *                 example="John"
+ *             ),
+ *             @OA\Property(
+ *                 property="last_name",
+ *                 type="string",
+ *                 example="Doe"
+ *             ),
+ *             @OA\Property(
+ *                 property="other_name",
+ *                 type="string",
+ *                 example="Smith"
+ *             ),
+ *             @OA\Property(
+ *                 property="email",
+ *                 type="string",
+ *                 example=""
+ *             ),
+ *             @OA\Property(
+ *                 property="phone_number",
+ *                 type="string",
+ *                 example="08012345678"
+ *             ),
+ *             @OA\Property(
+ *                 property="date_of_birth",
+ *                 type="string",
+ *                 format="date",
+ *                 example="2021-01-01"
+ *             ),
+ *             @OA\Property(
+ *                 property="enrollment_status",
+ *                 type="string",
+ *                 enum={"New", "Enrolled"},
+ *                 example="New"
+ *             ),
+ *             @OA\Property(
+ *                 property="class_level_id",
+ *                 type="integer",
+ *                 example=1
+ *             ),
+ *             @OA\Property(
+ *                 property="parent_first_name",
+ *                 type="string",
+ *                 example="Jane"
+ *             ),
+ *             @OA\Property(
+ *                 property="parent_last_name",
+ *                 type="string",
+ *                 example="Doe"
+ *             ),
+ *             @OA\Property(
+ *                 property="parent_phone_number_1",
+ *                 type="string",
+ *                 example="08012345678"
+ *             ),
+ *             @OA\Property(
+ *                 property="parent_phone_number_2",
+ *                 type="string",
+ *                 example="08012345678"
+ *             ),
+ *             @OA\Property(
+ *                 property="parent_home_address",
+ *                 type="string",
+ *                 example="No 1, John Doe Street, Lagos"
+ *             ),
+ *             @OA\Property(
+ *                 property="parent_emergency_contact",
+ *                 type="string",
+ *                 example="08012345678"
+ *             ),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Created",
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="Student created successfully"
+ *             ),
+ *             @OA\Property(
+ *                 property="student",
+ *                 type="object",
+ *                  example={
+ *                     "id": 1,
+ *                    "first_name": "John",
+ *                   "last_name": "Doe",
+ *                 "other_name": "Smith",
+ *              "email": null,
+ *          "phone_number": "08012345678",
+ *      "date_of_birth": "2021-01-01",
+ * "enrollment_status": "New",
+ * "class_level_id": 1,
+ * "created_at": "2021-01-01T00:00:00.000000Z",
+ * "updated_at": "2021-01-01T00:00:00.000000Z"
+ * }
+ * )
+ * )
+ * ),
+ * @OA\Response(
+ * response=400,
+ * description="Bad Request",
+ * @OA\JsonContent(
+ * @OA\Property(
+ * property="message",
+ * type="string",
+ * example="The given data was invalid."
+ * ),
+ * @OA\Property(
+ * property="errors",
+ * type="object",
+ * example="Invalid data"
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ */
+
+
+//create update student annotation
+
+/**
+ * @OA\Patch(
+ *    path="/api/students/update/{id}",
+ *  summary="Update student",
+ * tags={"Students"},
+ * description="Update student",
+ * operationId="updateStudent",
+ * @OA\Parameter(
+ *   name="id",
+ *  in="path",
+ * description="Student id",
+ * required=true,
+ * @OA\Schema(
+ * type="integer",
+ * format="int64"
+ * )
+ * ),
+ * @OA\RequestBody(
+ *  required=true,
+ * description="Pass student details",
+ * @OA\JsonContent(
+ * required={
+ * "first_name",
+ * "last_name",
+ * "phone_number",
+ * "date_of_birth",
+ * "enrollment_status",
+ * "class_level_id"
+ * },
+ * @OA\Property(
+ * property="first_name",
+ * type="string",
+ * example="John"
+ * ),
+ * @OA\Property(
+ * property="last_name",
+ * type="string",
+ * example="Doe"
+ * ),
+ * @OA\Property(
+ * property="other_name",
+ * type="string",
+ * example="Smith"
+ * ),
+ * @OA\Property(
+ * property="email",
+ * type="string",
+ * example=""
+ * ),
+ * @OA\Property(
+ * property="phone_number",
+ * type="string",
+ * example="08012345678"
+ * ),
+ * @OA\Property(
+ * property="date_of_birth",
+ * type="string",
+ * format="date",
+ * example="2021-01-01"
+ * ),
+ * @OA\Property(
+ * property="enrollment_status",
+ * type="string",
+ * enum={"New", "Enrolled"},
+ * example="New"
+ * ),
+ * @OA\Property(
+ * property="class_level_id",
+ * type="integer",
+ * example=1
+ * ),
+ * @OA\Property(
+ * property="parent_first_name",
+ * type="string",
+ * example="Jane"
+ * ),
+ *  
+ * @OA\Property(
+ * property="parent_last_name",
+ * type="string",
+ * example="Doe"
+ * ),
+ * @OA\Property(
+ * property="parent_phone_number_1",
+ * type="string",
+ * example="08012345678"
+ * ),
+ * @OA\Property(
+ * property="parent_phone_number_2",
+ * type="string",
+ *  
+ * example="08012345678"
+ * ),
+ * @OA\Property(
+ * property="parent_home_address",
+ * type="string",
+ * example="No 1, John Doe Street, Lagos"
+ * ),
+ * @OA\Property(
+ * property="parent_emergency_contact",
+ * type="string",
+ * example="08012345678"
+ * ),
+ * )
+ * ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Created",
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="Student updated successfully"
+ *             ),
+ *             @OA\Property(
+ *                 property="student",
+ *                 type="object",
+ *                  example={
+ *                     "id": 1,
+ *                    "first_name": "John",
+ *                   "last_name": "Doe",
+ *                 "other_name": "Smith",
+ *              "email": null,
+ *          "phone_number": "08012345678",
+ *      "date_of_birth": "2021-01-01",
+ * "enrollment_status": "New",
+ * "class_level_id": 1,
+ * "created_at": "2021-01-01T00:00:00.000000Z",
+ * "updated_at": "2021-01-01T00:00:00.000000Z"
+ * }
+ * )
+ * )
+ * ),
+ * @OA\Response(
+ * response=400,
+ * description="Bad Request",
+ * @OA\JsonContent(
+ * @OA\Property(
+ * property="message",
+ * type="string",
+ * example="The given data was invalid."
+ * ),
+ * @OA\Property(
+ * property="errors",
+ * type="object",
+ * example="Invalid data"
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ */
 class StudentController extends BaseController
 {
 
@@ -343,24 +502,24 @@ class StudentController extends BaseController
     public function store(Request $request)
     {
 
-        // $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
 
-        //     'first_name' => ['required', 'string', 'max:255'],
-        //     'last_name' => ['required', 'string', 'max:255'],
-        //     'other_name' => ['nullable', 'string', 'max:255'],
-        //     'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
-        //     'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
-        //     'date_of_birth' => ['required', 'date'],
-        //     'enrollment_status' => ['required'],
-        //     'class_level_id' => ['required'],
-        //     'parent_first_name' => ['nullable', 'string', 'max:255'],
-        //     'parent_last_name' => ['nullable', 'string', 'max:255'],
-        //     'parent_phone_number_1' => ['nullable', 'string', 'max:255'],
-        //     'parent_phone_number_2' => ['nullable', 'string', 'max:255'],
-        //     'parent_home_address' => ['nullable', 'string', 'max:255'],
-        //     'parent_emergency_contact' => ['nullable', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'other_name' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
+            'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
+            'date_of_birth' => ['required', 'date'],
+            'enrollment_status' => ['required'],
+            'class_level_id' => ['required'],
+            'parent_first_name' => ['nullable', 'string', 'max:255'],
+            'parent_last_name' => ['nullable', 'string', 'max:255'],
+            'parent_phone_number_1' => ['nullable', 'string', 'max:255'],
+            'parent_phone_number_2' => ['nullable', 'string', 'max:255'],
+            'parent_home_address' => ['nullable', 'string', 'max:255'],
+            'parent_emergency_contact' => ['nullable', 'string', 'max:255'],
 
-        // ]);
+        ]);
 
         // if ($validator->fails()) {
         //     return $this->sendError('Validation Error.', $validator->errors());
@@ -406,7 +565,7 @@ class StudentController extends BaseController
         //create two step verification
         $user->twoStepVerification()->create([
             'user_id' => $user->id,
-            'enabled' => true
+            'enabled' => false
         ]);
 
         //send sms to student
@@ -480,19 +639,6 @@ class StudentController extends BaseController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-
-
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -502,6 +648,52 @@ class StudentController extends BaseController
     public function update(Request $request, $id)
     {
         //
+
+        $validator = Validator::make($request->all(), [
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'other_name' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
+            'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
+            'date_of_birth' => ['required', 'date'],
+            'enrollment_status' => ['required'],
+            'class_level_id' => ['required'],
+            'parent_first_name' => ['nullable', 'string', 'max:255'],
+            'parent_last_name' => ['nullable', 'string', 'max:255'],
+            'parent_phone_number_1' => ['nullable', 'string', 'max:255'],
+            'parent_phone_number_2' => ['nullable', 'string', 'max:255'],
+            'parent_home_address' => ['nullable', 'string', 'max:255'],
+            'parent_emergency_contact' => ['nullable', 'string', 'max:255'],
+
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $student = Student::find($id);
+        $student->first_name = $request->first_name;
+        $student->last_name = $request->last_name;
+        $student->other_name = $request->other_name;
+        $student->email = $request->email;
+        $student->phone_number = $request->phone_number;
+        $student->date_of_birth = $request->date_of_birth;
+        $student->enrollment_status = $request->enrollment_status;
+        $student->class_level_id = $request->class_level_id;
+        $student->parent_first_name = $request->parent_first_name;
+        $student->parent_last_name = $request->parent_last_name;
+        $student->parent_phone_number_1 = $request->parent_phone_number_1;
+        $student->parent_phone_number_2 = $request->parent_phone_number_2;
+        $student->parent_home_address = $request->parent_home_address;
+        $student->parent_emergency_contact = $request->parent_emergency_contact;
+        $student->save();
+        $student->refresh();
+
+        $success = [
+            'student' => $student,
+        ];
+
+        return $this->sendResponse($success, 'Student updated successfully.');
     }
 
     /**
@@ -554,7 +746,7 @@ class StudentController extends BaseController
             $this->sendError('Student not deleted ecause it is dependent on other model.');
     }
 
-  
+
     //generate annotation for the downloadStudentList() method (GET /students/download)
     /**
      * @OA\Get(
