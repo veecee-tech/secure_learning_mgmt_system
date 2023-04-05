@@ -165,7 +165,7 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Patch(
- *    path="/api/students/update/{id}",
+ *    path="/api/admin/students/update/{id}",
  *  summary="Update student",
  * tags={"Students"},
  * security={{"Bearer":{}}},
