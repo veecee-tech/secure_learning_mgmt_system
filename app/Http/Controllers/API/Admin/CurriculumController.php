@@ -170,13 +170,16 @@ class CurriculumController extends BaseController
     public function store(Request $request)
     {
         
+
         $validator = Validator::make($request->all(), [
             'subject_name' => 'required|string',
-            'class' => 'required|string|exists:class_levels,name|unique:subjects,class_level_id',,
-            'topic_files' => 'nullable|array',
-            'topic_files.*' => 'nullable|file|mimes:pdf,doc,docx,txt|max:2048'
+            'class' => 'required|exists:class_levels,name',
+            'topic_files' => 'required|array',
+            'topic_files.*' => 'required|file'
         ]);
 
+
+        
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors(), 422);
@@ -186,7 +189,6 @@ class CurriculumController extends BaseController
         $subject->class_level_id = ClassLevel::where('name', $request->class)->first()->id;
         $subject->save();
 
-        if($request->file('topic_files')){
         foreach ($request->file('topic_files') as $file) {
             
             
@@ -200,7 +202,7 @@ class CurriculumController extends BaseController
             $topic->subject_id = $subject->id;
             $topic->save();
         }
-    }
+
         return $this->sendResponse($subject, 'Subject created successfully.', 201);
     }
 
