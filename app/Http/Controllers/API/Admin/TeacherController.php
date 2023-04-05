@@ -361,7 +361,7 @@ class TeacherController extends BaseController
         );
 
         if ($validatedData->fails()) {
-            return $this->sendError('Validation Error.', $validatedData->errors());
+            return $this->sendError('Validation Error.', $validatedData->errors(), 422);
         }
 
         $username = $this->generateTeacherId();
@@ -434,7 +434,7 @@ class TeacherController extends BaseController
             'teacher' => $teacher,
         ];
 
-        return $this->sendResponse($success, 'Teacher created successfully.');
+        return $this->sendResponse($success, 'Teacher created successfully.', 201);
     }
 
 
@@ -493,7 +493,7 @@ class TeacherController extends BaseController
         $success['fullname'] = $teacher->teacher->getFullnameAttribute();
         $success['class'] = $teacher->teacher->classLevel()->first()->name;
 
-        return $this->sendResponse($success, 'Teacher retrieved successfully.');
+        return $this->sendResponse($success, 'Teacher retrieved successfully.', 200);
     }
 
     /**
@@ -574,8 +574,8 @@ class TeacherController extends BaseController
         $deleted = $teacherToDelete->delete();
 
         return $deleted ?
-            $this->sendResponse($deleted, 'Teacher deleted successfully.') :
-            $this->sendError('Teacher not deleted ecause it is dependent on other model.');
+            $this->sendResponse($deleted, 'Teacher deleted successfully.', 200) :
+            $this->sendError('Error','Teacher not deleted ecause it is dependent on other model.'. 400);
     }
 
     //generate annotation for the downloadTeacherList method

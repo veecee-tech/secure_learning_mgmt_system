@@ -521,9 +521,9 @@ class StudentController extends BaseController
 
         ]);
 
-        // if ($validator->fails()) {
-        //     return $this->sendError('Validation Error.', $validator->errors());
-        // }
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 400);
+        }
 
 
         //create new user with role student and auto generate password and auto generated username
@@ -580,7 +580,7 @@ class StudentController extends BaseController
             'student' => $student,
         ];
 
-        return $this->sendResponse($success, 'Student created successfully.');
+        return $this->sendResponse($success, 'Student created successfully.', 201);
     }
 
     //generate annotation for the show() method (GET /students/{id})
@@ -635,7 +635,7 @@ class StudentController extends BaseController
         $success['fullname'] = $student->student->getFullnameAttribute();
         $success['class'] = $student->student->classLevel;
 
-        return $this->sendResponse($success, 'Student retrieved successfully.');
+        return $this->sendResponse($success, 'Student retrieved successfully.', 200);
     }
 
     /**
@@ -668,7 +668,7 @@ class StudentController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 400);
         }
 
         $student = Student::find($id);
@@ -693,7 +693,7 @@ class StudentController extends BaseController
             'student' => $student,
         ];
 
-        return $this->sendResponse($success, 'Student updated successfully.');
+        return $this->sendResponse($success, 'Student updated successfully.', 200);
     }
 
     /**
@@ -742,8 +742,8 @@ class StudentController extends BaseController
         $deleted = $studentToDelete->delete();
 
         return $deleted ?
-            $this->sendResponse($deleted, 'Student deleted successfully.') :
-            $this->sendError('Student not deleted ecause it is dependent on other model.');
+            $this->sendResponse($deleted, 'Student deleted successfully.', 200) :
+            $this->sendError('Error','Student not deleted ecause it is dependent on other model.', 400);
     }
 
 

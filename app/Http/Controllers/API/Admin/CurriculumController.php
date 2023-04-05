@@ -182,7 +182,7 @@ class CurriculumController extends BaseController
         
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
         $subject = new Subject();
         $subject->name = $request->input('subject_name');
@@ -203,7 +203,7 @@ class CurriculumController extends BaseController
             $topic->save();
         }
 
-        return $this->sendResponse($subject, 'Subject created successfully.');
+        return $this->sendResponse($subject, 'Subject created successfully.', 201);
     }
 
 /**
@@ -242,7 +242,7 @@ class CurriculumController extends BaseController
         $class_levels = ClassLevel::with(
             'subjects.topics'
         )->get();
-        return $this->sendResponse($class_levels, 'Class levels retrieved successfully.');
+        return $this->sendResponse($class_levels, 'Class levels retrieved successfully.', 200);
     }
 
 
@@ -324,7 +324,7 @@ class CurriculumController extends BaseController
             'subjects.topics'
         )->where('id', $id)->first();
 
-        return $this->sendResponse($class_level, 'Class level retrieved successfully.');
+        return $this->sendResponse($class_level, 'Class level retrieved successfully.', 200);
     }
 
  //create annotation for get all subjects
@@ -379,7 +379,7 @@ class CurriculumController extends BaseController
     public function allSubjects()
     {
         $subjects = Subject::with('topics')->get();
-        return $this->sendResponse($subjects, 'Subjects retrieved successfully.');
+        return $this->sendResponse($subjects, 'Subjects retrieved successfully.', 200);
     }
 
 
@@ -447,7 +447,7 @@ class CurriculumController extends BaseController
     public function getSubjectsByClass($id)
     {
         $subjects = Subject::with('topics')->where('class_level_id', $id)->get();
-        return $this->sendResponse($subjects, 'Subjects retrieved successfully.');
+        return $this->sendResponse($subjects, 'Subjects retrieved successfully.', 200);
     }
 
     //create annotation for get single subject
@@ -521,7 +521,7 @@ class CurriculumController extends BaseController
             ]
         )->first();
         
-        return $this->sendResponse($subject, 'Subject retrieved successfully.');
+        return $this->sendResponse($subject, 'Subject retrieved successfully.', 200);
     }
 }
 

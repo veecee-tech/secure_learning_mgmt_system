@@ -72,7 +72,7 @@ class DashboardController extends BaseController
 
         $success['total_students'] = $totalStudents;
 
-        return $this->sendResponse($success, 'Total Students');
+        return $this->sendResponse($success, 'Total Students', 200);
     }
 
  //create get total teachers annotation
@@ -135,7 +135,7 @@ class DashboardController extends BaseController
 
         $success['total_teachers'] = $totalTeachers;
 
-        return $this->sendResponse($success, 'Total Teachers');
+        return $this->sendResponse($success, 'Total Teachers', 200);
     }
 
 }

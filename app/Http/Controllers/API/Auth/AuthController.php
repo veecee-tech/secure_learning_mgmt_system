@@ -78,7 +78,7 @@ class AuthController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
         $user = User::create([
@@ -98,7 +98,7 @@ class AuthController extends BaseController
         ]);
         
 
-        return $this->sendResponse($success, 'User registered successfully.');
+        return $this->sendResponse($success, 'User registered successfully.', 201);
     }
 
     //login with twillio otp phone number verification
@@ -153,12 +153,12 @@ class AuthController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
     
         if (!Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
     
         $user = $request->user();
@@ -177,7 +177,7 @@ class AuthController extends BaseController
             $success['phone_number'] = $user->phone_number;
             $success['role'] = $user->role;
 
-            return $this->sendResponse($success, 'User logged in successfully.');
+            return $this->sendResponse($success, 'User logged in successfully.', 200);
 
         }
     
@@ -189,7 +189,7 @@ class AuthController extends BaseController
         $user->otp = $otp;
         $user->save();
 
-        return $this->sendResponse($user, 'OTP sent successfully.');
+        return $this->sendResponse($user, 'OTP sent successfully.', 200);
 
     }
 
@@ -245,17 +245,17 @@ class AuthController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
         $user = User::where('phone_number', $request->phone_number)->first();
 
         if(!$user) {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
 
         if ($user->otp != $request->otp) {
-            return $this->sendError('Unauthorised.', ['error' => 'Invalid OTP']);
+            return $this->sendError('Unauthorised.', ['error' => 'Invalid OTP'], 401);
         }
 
         // Generate access token for the user
@@ -265,7 +265,7 @@ class AuthController extends BaseController
         $success['username'] = $user->username;
         $success['phone_number'] = $user->phone_number;
 
-        return $this->sendResponse($success, 'User logged in successfully.');
+        return $this->sendResponse($success, 'User logged in successfully.', 200);
 
     }
    
@@ -363,13 +363,13 @@ class AuthController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
         $user = User::where('phone_number', $request->phone_number)->first();
 
         if(!$user) {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
 
         // Generate OTP and send it to the user's phone number
@@ -380,7 +380,7 @@ class AuthController extends BaseController
         $user->otp = $otp;
         $user->save();
 
-        return $this->sendResponse($user, 'OTP sent successfully.');
+        return $this->sendResponse($user, 'OTP sent successfully.', 200);
 
     }
 
@@ -434,20 +434,20 @@ class AuthController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
         $user = User::where('phone_number', $request->phone_number)->first();
 
         if(!$user) {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
 
         if ($user->otp != $request->otp) {
-            return $this->sendError('Unauthorised.', ['error' => 'Invalid OTP']);
+            return $this->sendError('Unauthorised.', ['error' => 'Invalid OTP'], 401);
         }
     
-        return $this->sendResponse($user, 'Verification Successful.');
+        return $this->sendResponse($user, 'Verification Successful.', 200);
     }
 
 //create reset password after otp confirmation annotation
@@ -501,19 +501,19 @@ class AuthController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
         $user = User::where('phone_number', $request->phone_number)->first();
 
         if(!$user) {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
 
         $user->password = Hash::make($request->password);
         $user->otp = null;
         $user->save();
 
-        return $this->sendResponse($user, 'Password reset successfully.');
+        return $this->sendResponse($user, 'Password reset successfully.', 200);
     }
 }

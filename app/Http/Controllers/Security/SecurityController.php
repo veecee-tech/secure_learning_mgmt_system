@@ -143,7 +143,7 @@ class SecurityController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
         $user = auth()->user();
@@ -154,9 +154,9 @@ class SecurityController extends BaseController
 
             $user->save();
 
-            return $this->sendResponse($user, 'Password changed successfully.');
+            return $this->sendResponse($user, 'Password changed successfully.', 200);
         } else {
-            return $this->sendError('Validation Error.', ['current_password' => 'Current password is incorrect']);
+            return $this->sendError('Validation Error.', ['current_password' => 'Current password is incorrect'], 422);
         }
     }
 
@@ -280,7 +280,7 @@ class SecurityController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
         $user = auth()->user();
@@ -289,6 +289,6 @@ class SecurityController extends BaseController
         $twoFactorVerification->enabled = $request->input('enabled');
         $twoFactorVerification->save();
 
-        return $this->sendResponse($twoFactorVerification, 'Two step verification updated successfully.');
+        return $this->sendResponse($twoFactorVerification, 'Two step verification updated successfully.', 200);
     }
 }
