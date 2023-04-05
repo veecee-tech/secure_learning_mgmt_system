@@ -24,7 +24,7 @@ class CurriculumController extends BaseController
  *  tags={"Curriculum"},
  * description="Store subject",
  * operationId="storeSubject",
- * 
+ * security={{"Bearer":{}}},
  * @OA\RequestBody(
  *   required=true,
  * @OA\JsonContent(
@@ -36,7 +36,7 @@ class CurriculumController extends BaseController
  * @OA\Property(
  * property="class",
  * type="string",
- * example="JSS 1"
+ * example="JSS1"
  * ),
  * @OA\Property(
  * property="topic_files",
@@ -170,16 +170,13 @@ class CurriculumController extends BaseController
     public function store(Request $request)
     {
         
-
         $validator = Validator::make($request->all(), [
             'subject_name' => 'required|string',
-            'class' => 'required|exists:class_levels,name',
-            'topic_files' => 'required|array',
-            'topic_files.*' => 'required|file'
+            'class' => 'required|string|exists:class_levels,name|unique:subjects,class_level_id',,
+            'topic_files' => 'nullable|array',
+            'topic_files.*' => 'nullable|file|mimes:pdf,doc,docx,txt|max:2048'
         ]);
 
-
-        
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors(), 422);
@@ -189,6 +186,7 @@ class CurriculumController extends BaseController
         $subject->class_level_id = ClassLevel::where('name', $request->class)->first()->id;
         $subject->save();
 
+        if($request->file('topic_files')){
         foreach ($request->file('topic_files') as $file) {
             
             
@@ -202,7 +200,7 @@ class CurriculumController extends BaseController
             $topic->subject_id = $subject->id;
             $topic->save();
         }
-
+    }
         return $this->sendResponse($subject, 'Subject created successfully.', 201);
     }
 
@@ -211,7 +209,7 @@ class CurriculumController extends BaseController
  *     path="/api/admin/class/all",
  *     summary="Get all class levels, subjects and topics",
  *     tags={"Curriculum"},
- *      
+ *      security={{"Bearer":{}}},
  *     @OA\Response(
  *         response=200,
  *         description="Success",
@@ -253,6 +251,7 @@ class CurriculumController extends BaseController
  *    path="/api/admin/class/{id}",
  *   summary="Get single class level, subjects and topics",
  *  tags={"Curriculum"},
+ * security={{"Bearer":{}}},
  * @OA\Parameter(
  * name="id",
  * in="path",
@@ -334,6 +333,7 @@ class CurriculumController extends BaseController
      *    path="/api/admin/subjects/all",
      *  summary="Get all subjects, and topics",
      * tags={"Curriculum"},
+     * security={{"Bearer":{}}},
      * @OA\Response(
      * response=200,
      * description="Success",
@@ -391,6 +391,7 @@ class CurriculumController extends BaseController
     * path="/api/admin/class/{id}/subjects",
     * summary="Get all subjects and topics by class level",
     * tags={"Curriculum"},
+    * security={{"Bearer":{}}},
     * @OA\Parameter(
     * name="id",
     * in="path",
@@ -457,6 +458,7 @@ class CurriculumController extends BaseController
      * path="/api/admin/class/{id}/subject/{subject_id}",
      * summary="Get single subject and topics by class level",
      * tags={"Curriculum"},
+     * security={{"Bearer":{}}},
      * @OA\Parameter(
      * name="id",
      * in="path",

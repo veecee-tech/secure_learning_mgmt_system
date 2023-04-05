@@ -28,6 +28,7 @@ use App\Http\Controllers\API\BaseController;
  * description="Create a new teacher",
  * operationId="store",
  * tags={"Teachers"},
+ * security={{"Bearer":{}}},
  * @OA\RequestBody(
  *   required=true,
  *  description="Pass teacher details",
@@ -173,6 +174,7 @@ class TeacherController extends BaseController
      * description="Get list of teachers",
      * operationId="getTeachers",
      * tags={"Teachers"},
+     * security={{"Bearer":{}}},
      * @OA\Response(
      *   response=200,
      * description="Success",
@@ -236,6 +238,7 @@ class TeacherController extends BaseController
      * description="Get list of class levels",
      * operationId="getClassLevelListeachers",
      * tags={"Teachers"},
+     * security={{"Bearer":{}}},
      * @OA\Response(
      * response=200,
      * description="Success",
@@ -443,6 +446,7 @@ class TeacherController extends BaseController
      *     path="/api/admin/teacher/view/{id}",
      *    summary="Get teacher by id",
      *    tags={"Teachers"},
+     * security={{"Bearer":{}}},
      *   description="Get teacher by id",
      *  operationId="showTeacher",
      *    @OA\Parameter(
@@ -528,6 +532,7 @@ class TeacherController extends BaseController
      *    path="/api/admin/teachers/delete/{id}",
      *   summary="Delete teacher by id",
      * tags={"Teachers"},
+     * security={{"Bearer":{}}},
      * description="Delete teacher by id",
      * operationId="deleteTeacher",
      * @OA\Parameter(
@@ -584,6 +589,7 @@ class TeacherController extends BaseController
      *    path="/api/admin/teachers/download",
      *   summary="Download teacher list",
      * tags={"Teachers"},
+     * security={{"Bearer":{}}},
      * description="Download teacher list",
      * operationId="downloadTeacherList",
      * @OA\Response(

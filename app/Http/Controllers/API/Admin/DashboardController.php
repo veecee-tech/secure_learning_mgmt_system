@@ -18,6 +18,7 @@ class DashboardController extends BaseController
  *     path="/api/admin/dashboard/total-students",
  *    summary="Get total students",
  *    tags={"Admin Dashboard"},
+ * security={{"Bearer":{}}},
  *   description="Get total students",
  *  operationId="getTotalStudents",
  * 
@@ -83,6 +84,7 @@ class DashboardController extends BaseController
  * tags={"Admin Dashboard"},
  * description="Get total teachers",
  * operationId="getTotalTeachers",
+ * security={{"Bearer":{}}},
  * 
  * @OA\Response(
  *  response=200,

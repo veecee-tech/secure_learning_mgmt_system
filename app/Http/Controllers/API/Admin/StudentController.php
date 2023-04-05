@@ -20,6 +20,7 @@ use OpenApi\Annotations as OA;
  *     path="/api/admin/create-student",
  *     summary="Create a new student",
  *     tags={"Students"},
+ * security={{"Bearer":{}}},
  *     description="Create a new student",
  *     operationId="createStudent",
  *     @OA\RequestBody(
@@ -167,6 +168,7 @@ use OpenApi\Annotations as OA;
  *    path="/api/students/update/{id}",
  *  summary="Update student",
  * tags={"Students"},
+ * security={{"Bearer":{}}},
  * description="Update student",
  * operationId="updateStudent",
  * @OA\Parameter(
@@ -348,7 +350,7 @@ class StudentController extends BaseController
      *   summary="Get list of students",
      * 
      *  tags={"Students"},
-     * 
+     * security={{"Bearer":{}}},
      * description="Get list of students",
      * 
      * operationId="getStudents",
@@ -416,7 +418,7 @@ class StudentController extends BaseController
      * summary="Get list of class levels",
      *  
      * tags={"Students"},
-     * 
+     * security={{"Bearer":{}}},
      * description="Get list of class levels",
      * 
      * operationId="getClassLevelList",
@@ -591,7 +593,7 @@ class StudentController extends BaseController
      * description="View student",
      * operationId="viewStudent",
      * tags={"Students"},
-     * security={{"bearerAuth":{}}},
+     * security={{"Bearer":{}}},
      * 
      * @OA\Parameter(
      * name="id",
@@ -703,7 +705,7 @@ class StudentController extends BaseController
      * description="Delete student",
      * operationId="deleteStudent",
      * tags={"Students"},
-     * security={{"bearerAuth":{}}},
+     * security={{"Bearer":{}}},
      * 
      * @OA\Parameter(
      * name="id",
@@ -755,7 +757,7 @@ class StudentController extends BaseController
      * description="Download student list",
      * operationId="downloadStudentList",
      * tags={"Students"},
-     * security={{"bearerAuth":{}}},
+     * security={{"Bearer":{}}},
      * 
      * @OA\Response(
      * response=200,
