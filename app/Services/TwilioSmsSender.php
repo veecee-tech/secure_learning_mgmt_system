@@ -11,7 +11,7 @@ class TwilioSmsSender
 
     public function __construct()
     {
-        $this->twilio = new Client('AC13397242b39456d518428e1a960f9821','045b3c2ae76c56f6d2f3f95e60b14e5a');
+        $this->twilio = new Client(env('TWILLIO_ACCOUNT_SID'),env('TWILLIO_AUTH_TOKEN'));
     }
 
     public function sendOTP($to, $otp)
