@@ -142,6 +142,164 @@ use App\Http\Controllers\API\BaseController;
  * 
  * 
  */
+
+
+/**
+ * @OA\Patch(
+ *    path="/api/admin/teachers/update/{id}",
+ *  summary="Update teacher",
+ * tags={"Teacher"},
+ * security={{"Bearer":{}}},
+ * description="Update teacher",
+ * operationId="updateTeacher",
+ * @OA\Parameter(
+ *   name="id",
+ *  in="path",
+ * description="teacher id",
+ * required=true,
+ * @OA\Schema(
+ * type="integer",
+ * format="int64"
+ * )
+ * ),
+ * @OA\RequestBody(
+ *  required=true,
+ * description="Pass teacher details",
+ * @OA\JsonContent(
+ * required={
+ * "first_name",
+ * "last_name",
+ * "phone_number",
+ * "date_of_birth",
+ * "enrollment_status",
+ * "class_level_id"
+ * },
+ * @OA\Property(
+ * property="first_name",
+ * type="string",
+ * example="John"
+ * ),
+ * @OA\Property(
+ * property="last_name",
+ * type="string",
+ * example="Doe"
+ * ),
+ * @OA\Property(
+ * property="other_name",
+ * type="string",
+ * example="Smith"
+ * ),
+ * @OA\Property(
+ * property="email",
+ * type="string",
+ * example=""
+ * ),
+ * @OA\Property(
+ * property="phone_number",
+ * type="string",
+ * example="08012345678"
+ * ),
+ * @OA\Property(
+ * property="date_of_birth",
+ * type="string",
+ * format="date",
+ * example="2021-01-01"
+ * ),
+ * @OA\Property(
+ * property="enrollment_status",
+ * type="string",
+ * enum={"New", "Old"},
+ * example="New"
+ * ),
+ * @OA\Property(
+ * property="class_level_id",
+ * type="integer",
+ * example=1
+ * ),
+ * @OA\Property(
+ * property="parent_first_name",
+ * type="string",
+ * example="Jane"
+ * ),
+ *  
+ * @OA\Property(
+ * property="parent_last_name",
+ * type="string",
+ * example="Doe"
+ * ),
+ * @OA\Property(
+ * property="parent_phone_number_1",
+ * type="string",
+ * example="08012345678"
+ * ),
+ * @OA\Property(
+ * property="parent_phone_number_2",
+ * type="string",
+ *  
+ * example="08012345678"
+ * ),
+ * @OA\Property(
+ * property="parent_home_address",
+ * type="string",
+ * example="No 1, John Doe Street, Lagos"
+ * ),
+ * @OA\Property(
+ * property="parent_emergency_contact",
+ * type="string",
+ * example="08012345678"
+ * ),
+ * )
+ * ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Created",
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="Teacher updated successfully"
+ *             ),
+ *             @OA\Property(
+ *                 property="teacher",
+ *                 type="object",
+ *                  example={
+ *                     "id": 1,
+ *                    "first_name": "John",
+ *                   "last_name": "Doe",
+ *                 "other_name": "Smith",
+ *              "email": null,
+ *          "phone_number": "08012345678",
+ *      "date_of_birth": "2021-01-01",
+ * "enrollment_status": "New",
+ * "class_level_id": 1,
+ * "created_at": "2021-01-01T00:00:00.000000Z",
+ * "updated_at": "2021-01-01T00:00:00.000000Z"
+ * }
+ * )
+ * )
+ * ),
+ * @OA\Response(
+ * response=400,
+ * description="Bad Request",
+ * @OA\JsonContent(
+ * @OA\Property(
+ * property="message",
+ * type="string",
+ * example="The given data was invalid."
+ * ),
+ * @OA\Property(
+ * property="errors",
+ * type="object",
+ * example="Invalid data"
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ */
 class TeacherController extends BaseController
 {
     //
@@ -191,7 +349,7 @@ class TeacherController extends BaseController
      * 
      * {
      * "id": 1,
-     * "student_id": "m000001",
+     * "teacher_id": "m000001",
      * "first_name": "John",
      * "last_name": "Doe",
      * "other_name": "Doe",
@@ -425,7 +583,7 @@ class TeacherController extends BaseController
             'enabled' => true
         ]);
 
-        //send sms to student
+        //send sms to teacher
         // $this->twilioSmsSender->sendOTP(
         //     $request->phone_number,
         //     "Your username is $username and password is $random_password"
