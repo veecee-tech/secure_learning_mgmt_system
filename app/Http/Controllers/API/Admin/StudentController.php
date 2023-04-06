@@ -796,4 +796,76 @@ class StudentController extends BaseController
 
         return response()->download($filename, 'student_list.csv', $headers);
     }
+
+//generate annotation for the searchStudentByClassAndName() method (GET /students/search-by-class-level-and-name)
+/**
+ * @OA\Get(
+ * path="/api/admin/students/search-by-class-level-and-name",
+ * summary="Search student by class level and name",
+ * description="Search student by class level and name",
+ * operationId="searchStudentByClassAndName",
+ * tags={"Students"},
+ * security={{"Bearer":{}}},
+ * 
+ * @OA\Parameter(
+ * name="class_level_id",
+ * in="query",
+ * description="Class level ID",
+ * required=true,
+ * @OA\Schema(
+ * type="integer",
+ * format="int64"
+ * )
+ * ),
+ * 
+ * @OA\Parameter(
+ * name="search_term",
+ * in="query",
+ * description="Search term",
+ * required=true,
+ * @OA\Schema(
+ * type="string"
+ * ),
+ * ),
+ * 
+ * @OA\Response(
+ * response=200,
+ * description="Success",
+ * @OA\JsonContent(
+ * 
+ * @OA\Property(
+ * property="success",
+ * type="object")
+ * 
+ * )
+ * )
+ * 
+ * )
+ * 
+ */ 
+    public function searchStudentByClassAndName(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'class_level_id' => ['required'],
+            'search_term' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 400);
+        }
+
+        $students = Student::where('class_level_id', $request->class_level_id)
+            ->where(function ($query) use ($request) {
+                $query->where('first_name', 'like', '%' . $request->search_term . '%')
+                    ->orWhere('last_name', 'like', '%' . $request->search_term . '%')
+                    ->orWhere('other_name', 'like', '%' . $request->search_term . '%');
+            })
+            ->get();
+        
+        if(count($students) == 0) {
+            return $this->sendError('Record Not Found', [], 404);
+        }
+
+        return $this->sendResponse($students, 'Students retrieved successfully.', 200);
+    }
 }

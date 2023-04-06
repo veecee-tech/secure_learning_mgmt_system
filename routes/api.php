@@ -54,11 +54,13 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/students', [StudentController::class, 'index']);
         Route::post('/create-student', [StudentController::class, 'store']);
         Route::get('/students/view/{id}', [StudentController::class, 'show']);
-        Route::patch('/students/update/{id}', [StudentController::class, 'update']);
-        Route::delete('/students/delete/{id}', [StudentController::class, 'destroy']);
+        Route::patch('/students/update/{id?}', [StudentController::class, 'update']);
+        Route::delete('/students/delete/{id?}', [StudentController::class, 'destroy']);
         //download student list
         Route::get('/students/download', [StudentController::class, 'downloadStudentList']);
         Route::get('/students/get-class-level-list', [StudentController::class, 'getClassLevelList']);
+        //search student by class level
+        Route::get('/students/search-by-class-level-and-name', [StudentController::class, 'searchStudentByClassAndName']);
 
        
         Route::post('/create-teacher', [TeacherController::class, 'store']);
