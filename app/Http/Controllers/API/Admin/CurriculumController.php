@@ -179,8 +179,6 @@ class CurriculumController extends BaseController
         ]);
 
 
-        
-
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
@@ -191,12 +189,22 @@ class CurriculumController extends BaseController
         
         foreach ($request->file('topic_files') as $file) {
             
-
             $file_path = $file->store('public');
            
             $file_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $file_contents = Storage::disk('public')->put($file_name, file_get_contents($file));
 
+            //get the file encoding
+            $file_encoding = mb_detect_encoding(Storage::get($file_path), 'UTF-8, ISO-8859-1', true);
+            
+            //check if it is english supported encoding
+            if ($file_encoding != 'UTF-8') {
+                //convert to utf-8
+                $file_contents = mb_convert_encoding(Storage::get($file_path), 'UTF-8', $file_encoding);
+            } else {
+                $file_contents = Storage::get($file_path);
+            }
+
+            // $file_contents = Storage::get($file_path);
             $topic = new Topic();
             $topic->name = $file_name;
             $topic->content = $file_contents;

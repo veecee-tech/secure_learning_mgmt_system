@@ -5,14 +5,15 @@ namespace App\Http\Controllers\API\Admin;
 use App\Models\User;
 use App\Models\ClassLevel;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 use App\Models\Student\Student;
 use App\Services\TwilioSmsSender;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\StudentResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\BaseController;
-use OpenApi\Annotations as OA;
 
 
 /**
@@ -739,6 +740,10 @@ class StudentController extends BaseController
         //
 
         $student = Student::find($id);
+
+        if(is_null($student)){
+            return $this->sendError('Student not found.',[], 400);
+        };
         $studentToDelete = User::find($student->user_id);
 
         $deleted = $studentToDelete->delete();
@@ -867,5 +872,38 @@ class StudentController extends BaseController
         }
 
         return $this->sendResponse($students, 'Students retrieved successfully.', 200);
+    }
+
+
+//generate annotation for userLoggedActivity() method (GET /user-logged-activity)
+/**
+ * @OA\Get(
+ * path="/admin/user-activity",
+ * summary="Get user logged activity",
+ * description="Get user logged activity",
+ * operationId="userLoggedActivity",
+ * tags={"Users"},
+ * security={{"Bearer":{}}},
+ * 
+ * @OA\Response(
+ * response=200,
+ * description="Success",
+ * @OA\JsonContent(
+ * 
+ * @OA\Property(
+ * property="success",
+ * type="object")
+ * 
+ * )
+ * )
+ *  )
+ * )
+ * 
+ */ 
+
+    public function userLoggedActivity(){
+        $user = Auth::user();
+        $user->load('userActivity');
+        return $this->sendResponse($user, 'User activity retrieved successfully.', 200);
     }
 }
