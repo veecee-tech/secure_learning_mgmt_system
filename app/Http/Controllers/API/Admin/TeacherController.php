@@ -148,7 +148,7 @@ use App\Http\Controllers\API\BaseController;
  * @OA\Patch(
  *    path="/api/admin/teachers/update/{id}",
  *  summary="Update teacher",
- * tags={"Teacher"},
+ * tags={"Teachers"},
  * security={{"Bearer":{}}},
  * description="Update teacher",
  * operationId="updateTeacher",
