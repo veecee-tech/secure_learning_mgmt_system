@@ -338,10 +338,10 @@ class TeacherController extends BaseController
                 'first_name' => ['required', 'string', 'max:255'],
                 'last_name' => ['required', 'string', 'max:255'],
                 'other_name' => ['nullable', 'string', 'max:255'],
-                'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
-                'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
+                'email' => ['nullable', 'string', 'email', 'max:255', 'unique:teachers'],
+                'phone_number' => ['required', 'string', 'max:255', 'unique:teachers', 'unique:users'],
                 'date_of_birth' => ['required', 'date'],
-                'enrollment_status' => ['required'],
+                'enrollment_status' => ['required', 'numeric'],
                 'class_level_id' => ['required'],
                 'parent_first_name' => ['nullable', 'string', 'max:255'],
                 'parent_last_name' => ['nullable', 'string', 'max:255'],
@@ -426,10 +426,10 @@ class TeacherController extends BaseController
         ]);
 
         //send sms to student
-        $this->twilioSmsSender->sendOTP(
-            $request->phone_number,
-            "Your username is $username and password is $random_password"
-        );
+        // $this->twilioSmsSender->sendOTP(
+        //     $request->phone_number,
+        //     "Your username is $username and password is $random_password"
+        // );
 
         $success = [
             'username' => $username,
