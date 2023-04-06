@@ -61,6 +61,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/students/get-class-level-list', [StudentController::class, 'getClassLevelList']);
         //search student by class level
         Route::get('/students/search-by-class-level-and-name', [StudentController::class, 'searchStudentByClassAndName']);
+        //user logged activity
+        Route::get('/user-logged-activity', [StudentController::class, 'userLoggedActivity']);
 
        
         Route::post('/create-teacher', [TeacherController::class, 'store']);

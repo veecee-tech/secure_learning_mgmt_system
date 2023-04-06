@@ -188,13 +188,14 @@ class CurriculumController extends BaseController
         $subject->name = $request->input('subject_name');
         $subject->class_level_id = ClassLevel::where('name', $request->class)->first()->id;
         $subject->save();
-
+        
         foreach ($request->file('topic_files') as $file) {
             
-            
-            $file_path = $file->store('public/topics');
-            $file_contents = Storage::get($file_path);
+
+            $file_path = $file->store('public');
+           
             $file_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $file_contents = Storage::disk('public')->put($file_name, file_get_contents($file));
 
             $topic = new Topic();
             $topic->name = $file_name;
