@@ -521,8 +521,52 @@ class TeacherController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
 
+        $validator = Validator::make($request->all(), [
+            'first_name' => ['nullable', 'string', 'max:255'],
+            'last_name' => ['nullable', 'string', 'max:255'],
+            'other_name' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:teachers'],
+            'phone_number' => ['required', 'string', 'max:255', 'unique:teachers', 'unique:users'],
+            'date_of_birth' => ['nullable', 'date'],
+            'enrollment_status' => ['nullable'],
+            'class_level_id' => ['nullable'],
+            'parent_first_name' => ['nullable', 'string', 'max:255'],
+            'parent_last_name' => ['nullable', 'string', 'max:255'],
+            'parent_phone_number_1' => ['nullable', 'string', 'max:255'],
+            'parent_phone_number_2' => ['nullable', 'string', 'max:255'],
+            'parent_home_address' => ['nullable', 'string', 'max:255'],
+            'parent_emergency_contact' => ['nullable', 'string', 'max:255'],
+
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 400);
+        }
+        
+        $teacher_to_update = Teacher::find($id);
+        $teacher_to_update->first_name = $request->first_name;
+        $teacher_to_update->last_name = $request->last_name;
+        $teacher_to_update->other_name = $request->other_name;
+        $teacher_to_update->email = $request->email;
+        $teacher_to_update->phone_number = $request->phone_number;
+        $teacher_to_update->date_of_birth = $request->date_of_birth;
+        $teacher_to_update->enrollment_status = $request->enrollment_status;
+        $teacher_to_update->class_level_id = $request->class_level_id;
+        $teacher_to_update->parent_first_name = $request->parent_first_name;
+        $teacher_to_update->parent_last_name = $request->parent_last_name;
+        $teacher_to_update->parent_phone_number_1 = $request->parent_phone_number_1;
+        $teacher_to_update->parent_phone_number_2 = $request->parent_phone_number_2;
+        $teacher_to_update->parent_home_address = $request->parent_home_address;
+        $teacher_to_update->parent_emergency_contact = $request->parent_emergency_contact;
+        $teacher_to_update->save();
+        $teacher_to_update->refresh();
+
+        $success = [
+            'teacher' => $teacher_to_update,
+        ];
+
+        return $this->sendResponse($success, 'Teacher updated successfully.', 200);
 
     }
 

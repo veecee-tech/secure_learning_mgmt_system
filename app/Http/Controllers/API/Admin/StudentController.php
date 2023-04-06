@@ -509,8 +509,8 @@ class StudentController extends BaseController
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'other_name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
-            'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:teachers'],
+            'phone_number' => ['required', 'string', 'max:255', 'unique:teachers', 'unique:users'],
             'date_of_birth' => ['required', 'date'],
             'enrollment_status' => ['required'],
             'class_level_id' => ['required'],
@@ -571,10 +571,10 @@ class StudentController extends BaseController
         ]);
 
         //send sms to student
-        // $this->twilioSmsSender->sendOTP(
-        //     $request->phone_number,
-        //     "Your username is $username and password is $random_password"
-        // );
+        $this->twilioSmsSender->sendOTP(
+            $request->phone_number,
+            "Your username is $username and password is $random_password"
+        );
 
         $success = [
             'username' => $username,
@@ -652,14 +652,14 @@ class StudentController extends BaseController
         //
 
         $validator = Validator::make($request->all(), [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['nullable', 'string', 'max:255'],
+            'last_name' => ['nullable', 'string', 'max:255'],
             'other_name' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'email', 'max:255', 'unique:students'],
-            'phone_number' => ['required', 'string', 'max:255', 'unique:students'],
-            'date_of_birth' => ['required', 'date'],
-            'enrollment_status' => ['required'],
-            'class_level_id' => ['required'],
+            'phone_number' => ['required', 'string', 'max:255', 'unique:students', 'unique:users'],
+            'date_of_birth' => ['nullable', 'date'],
+            'enrollment_status' => ['nullable'],
+            'class_level_id' => ['nullable'],
             'parent_first_name' => ['nullable', 'string', 'max:255'],
             'parent_last_name' => ['nullable', 'string', 'max:255'],
             'parent_phone_number_1' => ['nullable', 'string', 'max:255'],
