@@ -248,7 +248,6 @@ class CurriculumController extends BaseController
  * )
  * 
  */
- 
     public function store(Request $request)
     {
         

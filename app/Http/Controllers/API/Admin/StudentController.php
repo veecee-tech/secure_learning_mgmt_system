@@ -891,7 +891,7 @@ class StudentController extends BaseController
 //generate annotation for userLoggedActivity() method (GET /user-logged-activity)
 /**
  * @OA\Get(
- * path="/admin/user-activity",
+ * path="/api/admin/user-logged-activity",
  * summary="Get user logged activity",
  * description="Get user logged activity",
  * operationId="userLoggedActivity",
