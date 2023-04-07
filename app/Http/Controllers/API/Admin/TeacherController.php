@@ -601,7 +601,7 @@ class TeacherController extends BaseController
 
     /**
      * @OA\Get(
-     *     path="/api/admin/teacher/view/{id}",
+     *     path="/api/admin/teachers/view/{id}",
      *    summary="Get teacher by id",
      *    tags={"Teachers"},
      * security={{"Bearer":{}}},
@@ -645,17 +645,11 @@ class TeacherController extends BaseController
     public function show($id)
     {
 
-        $teacher = User::with(
-            'teacher'
-        )
-            ->where('id', $id)
-            ->first();
-        $success['id'] = $teacher->teacher->id;
-        $success['teacher_id'] = $teacher->username;
-        $success['fullname'] = $teacher->teacher->getFullnameAttribute();
-        $success['class'] = $teacher->teacher->classLevel()->first()->name;
+        return TeacherResource::collection(
+            Teacher::where('id', $id)->get()
+        );
 
-        return $this->sendResponse($success, 'Teacher retrieved successfully.', 200);
+        // return $this->sendResponse($success, 'Teacher retrieved successfully.', 200);
     }
 
     /**
