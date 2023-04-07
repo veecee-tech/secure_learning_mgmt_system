@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Http\Request;
+use Twilio\TwiML\Video\Room;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Admin\StudentController;
 use App\Http\Controllers\API\Admin\TeacherController;
 use App\Http\Controllers\Security\SecurityController;
+use App\Http\Controllers\API\ProfilePictureController;
 use App\Http\Controllers\API\Admin\DashboardController;
 use App\Http\Controllers\API\Admin\CurriculumController;
-use Twilio\TwiML\Video\Room;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,5 +105,11 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/read/topic/{id}', [CurriculumController::class, 'readTopic']);
         //get all topics
         Route::get('/read/subject/{subject_id}/topics', [CurriculumController::class, 'getAllTopicsBySubject']);
+    });
+
+    //create route group for profile photo
+    Route::group(['prefix' => 'profile-photo'], function () {
+        Route::post('/upload-picture', [ProfilePictureController::class, 'upload']);
+        Route::get('/get/{user_id}', [ProfilePictureController::class, 'show']);
     });
 });

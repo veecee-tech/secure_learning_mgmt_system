@@ -14,19 +14,12 @@ use App\Http\Resources\TeacherResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\BaseController;
 
-
-
-
-
-// generate annotation for store method
 /**
- * 
  * @OA\Post(
- * 
  * path="/api/admin/create-teacher",
  * summary="Create a new teacher",
  * description="Create a new teacher",
- * operationId="store",
+ * operationId="createTeacher",
  * tags={"Teachers"},
  * security={{"Bearer":{}}},
  * @OA\RequestBody(
@@ -678,8 +671,8 @@ class TeacherController extends BaseController
             'first_name' => ['nullable', 'string', 'max:255'],
             'last_name' => ['nullable', 'string', 'max:255'],
             'other_name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:teachers'],
-            'phone_number' => ['required', 'string', 'max:255', 'unique:teachers', 'unique:users'],
+            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'phone_number' => ['nullable', 'string', 'max:255'],
             'date_of_birth' => ['nullable', 'date'],
             'enrollment_status' => ['nullable'],
             'class_level_id' => ['nullable'],
