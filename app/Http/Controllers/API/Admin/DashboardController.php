@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
+use App\Models\Student\Student;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController;
-use OpenApi\Annotations as OA;
+use App\Models\Teacher\Teacher;
 
 class DashboardController extends BaseController
 {
@@ -69,7 +71,7 @@ class DashboardController extends BaseController
  */ 
     public function getTotalStudents()
     {
-        $totalStudents = User::where('role', 'student')->count();
+        $totalStudents = Student::count();
 
         $success['total_students'] = $totalStudents;
 
@@ -133,7 +135,7 @@ class DashboardController extends BaseController
  */    
     public function getTotalTeachers()
     {
-        $totalTeachers = User::where('role', 'teacher')->count();
+        $totalTeachers = Teacher::count();
 
         $success['total_teachers'] = $totalTeachers;
 
