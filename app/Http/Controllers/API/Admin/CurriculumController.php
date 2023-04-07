@@ -167,6 +167,88 @@ class CurriculumController extends BaseController
  * )
  *  
  */ 
+
+//create annotation for create single topic
+/**
+ * @OA\Post(
+ *   path="/api/admin/topic/create-single-topic",
+ *  summary="Store topic",
+ * tags={"Curriculum"},
+ * description="Store topic",
+ * operationId="storeTopic",
+ * 
+ * security={{"Bearer":{}}},
+ * @OA\RequestBody(
+ *  required=true,
+ * @OA\JsonContent(
+ * @OA\Property(
+ * property="subject_id",
+ * type="integer",
+ * example=1
+ * ),
+ * @OA\Property(
+ * property="topic_file",
+ * type="file",
+ * example="topic.pdf"
+ * )
+ * )
+ * ),
+ * 
+ * @OA\Response(
+ * response=200,
+ * description="Success",
+ * @OA\JsonContent(
+ * @OA\Property(
+ * property="success",
+ * type="boolean",
+ * example=true
+ * ),
+ * @OA\Property(
+ * property="data",
+ * type="object",
+ * @OA\Property(
+ * property="topic",
+ * type="object",
+ * @OA\Property(
+ * property="id",
+ * type="integer",
+ * example=1
+ * ),
+ * @OA\Property(
+ * property="subject_id",
+ * type="integer",
+ * example=1
+ * ),
+ * @OA\Property(
+ * property="file_path",
+ * type="string",
+ * example="public/topic.pdf"
+ * ),
+ * @OA\Property(
+ * property="file_name",
+ * type="string",
+ * example="topic.pdf"
+ * ),
+ * @OA\Property(
+ *  
+ * property="created_at",
+ * type="string",
+ * example="2020-10-10 10:10:10"
+ * ),
+ * @OA\Property(
+ * property="updated_at",
+ * type="string",
+ * example="2020-10-10 10:10:10"
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ * )
+ * 
+ */
+ 
     public function store(Request $request)
     {
         
@@ -215,6 +297,39 @@ class CurriculumController extends BaseController
         return $this->sendResponse($subject, 'Subject created successfully.', 201);
     }
 
+    public function createSingleTopic(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'subject_id' => 'required|exists:subjects,id',
+            'topic_file' => 'required|file'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
+        }
+
+        $file_path = $request->file('topic_file')->store('public');
+        $file_name = pathinfo($request->file('topic_file')->getClientOriginalName(), PATHINFO_FILENAME);
+
+        //get the file encoding
+        $file_encoding = mb_detect_encoding(Storage::get($file_path), 'UTF-8, ISO-8859-1', true);
+        
+        //check if it is english supported encoding
+        if ($file_encoding != 'UTF-8') {
+            //convert to utf-8
+            $file_contents = mb_convert_encoding(Storage::get($file_path), 'UTF-8', $file_encoding);
+        } else {
+            $file_contents = Storage::get($file_path);
+        }
+
+        $topic = new Topic();
+        $topic->name = $file_name;
+        $topic->content = $file_contents;
+        $topic->subject_id = $request->subject_id;
+        $topic->save();
+
+        return $this->sendResponse($topic, 'Topic created successfully.', 201);
+    }
 /**
  * @OA\Get(
  *     path="/api/admin/class/all",

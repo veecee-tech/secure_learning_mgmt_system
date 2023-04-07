@@ -27,4 +27,20 @@ class TwilioSmsSender
 
         return $message->sid;
     }
+
+    public function checkIfPhoneNumberIsAdded($to)
+    {
+        $to = '+234' . substr($to, 1);
+
+        $phoneNumbers = $this->twilio->phoneNumbers->read();
+        dd($phoneNumbers);
+
+        foreach ($phoneNumbers as $phoneNumber) {
+            if ($phoneNumber->phoneNumber == $to) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

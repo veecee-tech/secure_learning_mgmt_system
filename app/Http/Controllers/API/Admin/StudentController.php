@@ -572,10 +572,23 @@ class StudentController extends BaseController
         ]);
 
         //send sms to student
-        $this->twilioSmsSender->sendOTP(
+        
+
+        // $this->twilioSmsSender->sendOTP(
+        //     $request->phone_number,
+        //     "Your username is $username and password is $random_password"
+        // ) ? [] : $this->sendError('Error sending sms', [], 400);
+
+        //remove record if sms fails
+        if (!$this->twilioSmsSender->sendOTP(
             $request->phone_number,
             "Your username is $username and password is $random_password"
-        );
+        )) {
+            $user->delete();
+            $student->delete();
+
+            return $this->sendError('Error sending sms', [], 400);
+        }
 
         $success = [
             'username' => $username,

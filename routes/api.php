@@ -80,6 +80,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('class/{id}', [CurriculumController::class, 'getSingleClass']);
         Route::get('class/{id}/subjects', [CurriculumController::class, 'getSubjectsByClass']);
         Route::get('class/{id}/subject/{subject_id}', [CurriculumController::class, 'getSingleSubject']);
+        //createSingleTopic
+        Route::post('/topic/create-single-topic', [CurriculumController::class, 'createSingleTopic']);
 
 
         Route::get('subjects/all', [CurriculumController::class, 'allSubjects']);

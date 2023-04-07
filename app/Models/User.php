@@ -10,7 +10,8 @@ use App\Models\Security\TwoStepVerification;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Haruncpi\LaravelUserActivity\Traits\Loggable;
+use Haruncpi\LaravelUserActivity\Models\Log;
 
 
 
@@ -74,4 +75,8 @@ class User extends Authenticatable
         return $this->hasOne(TwoStepVerification::class);
     }
     
+    public function UserActivity()
+    {
+        return $this->hasMany(Log::class);
+    }
 }

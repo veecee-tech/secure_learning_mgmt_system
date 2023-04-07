@@ -10,6 +10,7 @@
         "doctrine/dbal": "^3.6",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
+        "haruncpi/laravel-user-activity": "^1.0",
         "illuminate/contracts": "^9.51",
         "laravel/framework": "^9.2",
         "laravel/passport": "^11.6",
