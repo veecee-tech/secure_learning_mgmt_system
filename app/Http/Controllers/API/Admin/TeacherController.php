@@ -685,6 +685,9 @@ class TeacherController extends BaseController
 
         ]);
 
+        $class_name = $request->class;
+        $class_level = ClassLevel::where('name', $class_name)->first();
+
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors(), 400);
         }
@@ -697,7 +700,7 @@ class TeacherController extends BaseController
         $teacher_to_update->phone_number = $request->phone_number;
         $teacher_to_update->date_of_birth = $request->date_of_birth;
         $teacher_to_update->enrollment_status = $request->enrollment_status;
-        $teacher_to_update->class_level_id = $request->class_level_id;
+        $teacher_to_update->class_level_id = $class_level->id;
         $teacher_to_update->parent_first_name = $request->parent_first_name;
         $teacher_to_update->parent_last_name = $request->parent_last_name;
         $teacher_to_update->parent_phone_number_1 = $request->parent_phone_number_1;
