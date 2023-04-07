@@ -650,6 +650,113 @@ class CurriculumController extends BaseController
         
         return $this->sendResponse($subject, 'Subject retrieved successfully.', 200);
     }
+
+    //create annotation for get single topic
+
+    /**
+     * 
+     * @OA\Get(
+     * path="/api/student/read/topic/{topic_id}",
+     * summary="Get single topic by class level",
+     * tags={"Students"},
+     * 
+     * security = {{"Bearer":{}}},
+     * 
+     * @OA\Parameter(
+     * name="topic_id",
+     * in="path",
+     * description="Topic id",
+     * required=true,
+     * @OA\Schema(
+     * type="integer",
+     * example="1"
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Success",
+     * @OA\JsonContent(
+     * @OA\Property(
+     * property="id",
+     * type="integer",
+     * example="1"
+     * ),
+     * @OA\Property(
+     * property="name",
+     * type="string",
+     * example="Introduction to Algebra"
+     * )
+     * )
+     * )
+     * )
+     *  
+     * 
+     */
+
+     public function readTopic($topic_id)
+     {
+         $topic = Topic::find($topic_id);
+         return $this->sendResponse($topic, 'Topic retrieved successfully.', 200);
+     }
+
+     //create annotation for get topics by subject id
+     
+        /**
+         * 
+         * @OA\Get(
+         * path="/api/student/read/subject/{subject_id}/topics",
+         * summary="Get all topics by subject id",
+         * tags={"Students"},
+         * 
+         * security = {{"Bearer":{}}},
+         * 
+         * @OA\Parameter(
+         * name="subject_id",
+         * in="path",
+         * description="Subject id",
+         * required=true,
+         * @OA\Schema(
+         * type="integer",
+         * example="1"
+         * )
+         * ),
+         * @OA\Response(
+         * response=200,
+         * description="Success",
+         * @OA\JsonContent(
+         * @OA\Property(
+         * property="topics",
+         * type="array",
+         * @OA\Items(
+         * @OA\Property(
+         * property="id",
+         * type="integer",
+         * example="1"
+         * ),
+         * @OA\Property(
+         * property="name",
+         * type="string",
+         * example="Introduction to Algebra"
+         * ),
+         * @OA\Property(
+         * property="content",
+         * type="string",
+         * example="Introduction to Algebra"
+         * )
+         * )
+         * )
+         * )
+         * )
+         * )
+         * 
+         */
+
+         public function getAllTopicsBySubject($subject_id)
+         {
+             $topics = Topic::where('subject_id', $subject_id)->get();
+             return $this->sendResponse($topics, 'Topics retrieved successfully.', 200);
+         }
 }
+
 
 

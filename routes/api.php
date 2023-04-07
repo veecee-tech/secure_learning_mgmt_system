@@ -98,4 +98,11 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/two-step-verification', [SecurityController::class, 'setTwoStepVerification']);
     });
 
+    Route::group(['prefix' => 'student', 'namespace' => 'Student'], function () {
+        
+        //get single topic
+        Route::get('/read/topic/{id}', [CurriculumController::class, 'readTopic']);
+        //get all topics
+        Route::get('/read/subject/{subject_id}/topics', [CurriculumController::class, 'getAllTopicsBySubject']);
+    });
 });
