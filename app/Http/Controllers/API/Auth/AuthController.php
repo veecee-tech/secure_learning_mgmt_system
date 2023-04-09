@@ -183,12 +183,9 @@ class AuthController extends BaseController
     
         // Generate OTP and send it to the user's phone number
         $otp = rand(100000, 999999);
-        $hello = $this->twilioSmsSender->checkIfPhoneNumberIsAdded($user->phone_number);
-        if ($hello) {
-            $this->twilioSmsSender->sendOTP($user->phone_number, "Your OTP is $otp");
-        } else {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
-        }
+        
+        $this->twilioSmsSender->sendOTP($user->phone_number, "Your OTP is $otp");
+        
 
 
         // Save the OTP in the database

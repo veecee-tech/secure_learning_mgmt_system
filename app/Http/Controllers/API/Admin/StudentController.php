@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\StudentResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\BaseController;
+use Haruncpi\LaravelUserActivity\Models\Log;
 
 
 /**
@@ -915,8 +916,7 @@ class StudentController extends BaseController
  */ 
 
     public function userLoggedActivity(){
-        $user = Auth::user();
-        $user->load('userActivity');
-        return $this->sendResponse($user, 'User activity retrieved successfully.', 200);
+        $logs = Log::all();
+        return $this->sendResponse($logs, 'User activity retrieved successfully.', 200);
     }
 }
