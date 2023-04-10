@@ -511,8 +511,8 @@ class StudentController extends BaseController
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'other_name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:teachers'],
-            'phone_number' => ['required', 'string', 'max:255', 'unique:teachers', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:students', 'unique:users'],
+            'phone_number' => ['required', 'string', 'max:255', 'unique:students', 'unique:users'],
             'date_of_birth' => ['required', 'date'],
             'enrollment_status' => ['required'],
             'class_level_id' => ['required'],
@@ -537,40 +537,59 @@ class StudentController extends BaseController
         //random password
         $random_password = rand(100000, 999999);
 
-        $user = User::create([
-            'username' => $username,
-            'phone_number' => $request->phone_number,
-            'password' => Hash::make($random_password),
-        ]);
+        // $user = User::create([
+        //     'username' => $username,
+        //     'phone_number' => $request->phone_number,
+        //     'password' => Hash::make($random_password),
+        // ]);
 
+        $user = new User;
+        $user->username = $username;
+        $user->phone_number = $request->phone_number;
+        $user->password = Hash::make($random_password);
         $user->role = 'student';
-        $user->save();
+        
+
+        if($user->save()){
+            $student = new Student;
+            $student->user_id = $user->id;
+            $student->first_name = $request->first_name;
+            $student->last_name = $request->last_name;
+            $student->other_name = $request->other_name;
+            $student->email = $request->email;
+            $student->phone_number = $request->phone_number;
+            $student->date_of_birth = $request->date_of_birth;
+            $student->enrollment_status = $request->enrollment_status;
+            $student->class_level_id = $request->class_level_id;
+            $student->parent_first_name = $request->parent_first_name;
+            $student->parent_last_name = $request->parent_last_name;
+            $student->parent_phone_number_1 = $request->parent_phone_number_1;
+            $student->parent_phone_number_2 = $request->parent_phone_number_2;
+            $student->parent_home_address = $request->parent_home_address;
+            $student->parent_emergency_contact = $request->parent_emergency_contact;
+            $student->save();
+
+            //create two step verification
+            $user->twoStepVerification()->create([
+                'user_id' => $user->id,
+                'enabled' => false
+            ]);
+
+            $success = [
+                'username' => $username,
+                'password' => $random_password,
+                'student' => $student,
+            ];
+    
+            return $this->sendResponse($success, 'Student created successfully.', 201);
+        }
+        else{
+            return $this->sendError('Error creating student', [], 400);
+        }
+        
 
 
-        $student = new Student;
-        $student->user_id = $user->id;
-        $student->first_name = $request->first_name;
-        $student->last_name = $request->last_name;
-        $student->other_name = $request->other_name;
-        $student->email = $request->email;
-        $student->phone_number = $request->phone_number;
-        $student->date_of_birth = $request->date_of_birth;
-        $student->enrollment_status = $request->enrollment_status;
-        $student->class_level_id = $request->class_level_id;
-        $student->parent_first_name = $request->parent_first_name;
-        $student->parent_last_name = $request->parent_last_name;
-        $student->parent_phone_number_1 = $request->parent_phone_number_1;
-        $student->parent_phone_number_2 = $request->parent_phone_number_2;
-        $student->parent_home_address = $request->parent_home_address;
-        $student->parent_emergency_contact = $request->parent_emergency_contact;
-        $student->save();
-
-
-        //create two step verification
-        $user->twoStepVerification()->create([
-            'user_id' => $user->id,
-            'enabled' => false
-        ]);
+        
 
         //send sms to student
         
@@ -579,25 +598,25 @@ class StudentController extends BaseController
         //     $request->phone_number,
         //     "Your username is $username and password is $random_password"
         // ) ? [] : $this->sendError('Error sending sms', [], 400);
-
+        
         //remove record if sms fails
-        if (!$this->twilioSmsSender->sendOTP(
-            $request->phone_number,
-            "Your username is $username and password is $random_password"
-        )) {
-            $user->delete();
-            $student->delete();
+        // if (!$this->twilioSmsSender->sendOTP(
+        //     $request->phone_number,
+        //     "Your username is $username and password is $random_password"
+        // )) {
+        //     $user->delete();
+        //     $student->delete();
 
-            return $this->sendError('Error sending sms', [], 400);
-        }
+        //     return $this->sendError('Error sending sms', [], 400);
+        // }
 
-        $success = [
-            'username' => $username,
-            'password' => $random_password,
-            'student' => $student,
-        ];
+        // $success = [
+        //     'username' => $username,
+        //     'password' => $random_password,
+        //     'student' => $student,
+        // ];
 
-        return $this->sendResponse($success, 'Student created successfully.', 201);
+        // return $this->sendResponse($success, 'Student created successfully.', 201);
     }
 
     //generate annotation for the show() method (GET /students/{id})
