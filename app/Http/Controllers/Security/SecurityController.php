@@ -298,7 +298,7 @@ class SecurityController extends BaseController
     /**
      * 
      * @OA\Get(
-     *   path="/api/security/get/two-step-verification-details'",
+     *   path="/api/security/get/two-step-verification-details",
      *  summary="Get two step verification",
      * tags={"Security"},
      * security={{"Bearer":{}}},
