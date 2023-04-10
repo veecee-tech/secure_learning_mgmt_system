@@ -125,7 +125,7 @@ class ProfilePictureController extends Controller
         $profilePicture = Photo::where('user_id', $user_id)->first();
 
         if (!$profilePicture) {
-            abort(404);
+            return response()->json(['message' => 'No profile picture found.']);
         }
 
         $imagePath = Storage::url($profilePicture->image_path);
