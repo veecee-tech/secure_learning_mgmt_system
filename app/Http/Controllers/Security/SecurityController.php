@@ -168,6 +168,7 @@ class SecurityController extends BaseController
      *   path="/api/security/two-step-verification",
      *  summary="Two step verification",
      * tags={"Security"},
+     * security={{"Bearer":{}}},
      * description="Two step verification",
      * operationId="twoStepVerification",
      * @OA\RequestBody(
@@ -290,5 +291,112 @@ class SecurityController extends BaseController
         $twoFactorVerification->save();
 
         return $this->sendResponse($twoFactorVerification, 'Two step verification updated successfully.', 200);
+    }
+
+    //create annotation for get two step verification
+
+    /**
+     * 
+     * @OA\Get(
+     *   path="/api/security/two-step-verification",
+     *  summary="Get two step verification",
+     * tags={"Security"},
+     * security={{"Bearer":{}}},
+     * description="Get two step verification",
+     * operationId="getTwoStepVerification",
+     * @OA\Response(
+     * response=200,
+     * description="Success",
+     * 
+     * @OA\JsonContent(
+     * @OA\Property(
+     * property="success",
+     * type="boolean",
+     * example=true
+     * ),
+     * @OA\Property(
+     * 
+     * 
+     * property="data",
+     * type="object",
+     * @OA\Property(
+     * property="id",
+     * type="integer",
+     * example=1
+     * ),
+     * @OA\Property(
+     * property="user_id",
+     * type="integer",
+     * example=1
+     * ),
+     * @OA\Property(
+     * property="enabled",
+     * type="boolean",
+     * example=true
+     * ),
+     * 
+     * )
+     * )
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated",
+     * @OA\JsonContent(
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * example="Unauthenticated."
+     * )
+     * 
+     * )
+     * 
+     * ),
+     * @OA\Response(
+     * 
+     *  response=403,
+     * description="Forbidden",
+     * @OA\JsonContent(
+     * 
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * example="Forbidden."
+     * )
+     * 
+     * )
+     * 
+     * ),
+     * @OA\Response(
+     * response=422,
+     * description="Validation Error",
+     * @OA\JsonContent(
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * example="Validation Error."
+     * ),
+     * @OA\Property(
+     * property="errors",
+     * type="object",
+     * @OA\Property(
+     * property="enabled",
+     * type="array",
+     * @OA\Items(
+     * type="string",
+     * example="The enabled field is required."
+     * )
+     * )
+     * )
+     * )
+     * )
+     * )
+     */ 
+    public function getCurrentTwoStepVerification()
+    {
+        $user = auth()->user();
+        $user = User::find($user->id);
+        $twoFactorVerification = TwoStepVerification::where('user_id', $user->id)->first();
+
+        return $this->sendResponse($twoFactorVerification, 'Two step verification fetched successfully.', 200);
     }
 }

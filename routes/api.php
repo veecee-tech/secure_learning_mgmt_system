@@ -97,6 +97,8 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'security', 'namespace' => 'Security'], function () {
         Route::post('/change-password', [SecurityController::class, 'changePassword']);
         Route::post('/two-step-verification', [SecurityController::class, 'setTwoStepVerification']);
+        //get current two step authentication
+        Route::get('/get/two-step-verification-details', [SecurityController::class, 'getCurrentTwoStepVerification']);
     });
 
     Route::group(['prefix' => 'student', 'namespace' => 'Student'], function () {
