@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Twilio\TwiML\Video\Room;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\Admin\StudentController;
 use App\Http\Controllers\API\Admin\TeacherController;
 use App\Http\Controllers\Security\SecurityController;
@@ -45,6 +46,10 @@ Route::middleware('auth:api')->group(function () {
         return $request->user();
     });
 
+    Route::group(['prefix' => 'user'], function () {
+        //getAuthUserClassLevel
+        Route::get('/get-auth-user-class-level', [UserController::class, 'getAuthUserClassLevel']);
+    });
     //create route for admin
     Route::group(['prefix' => 'admin'], function () {
         
@@ -79,7 +84,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/subject/store', [CurriculumController::class, 'store']);
         Route::get('class/all', [CurriculumController::class, 'allClassLevels']);
         Route::get('class/{id}', [CurriculumController::class, 'getSingleClass']);
-        Route::get('class/{id?}/subjects', [CurriculumController::class, 'getSubjectsByClass']);
+        Route::get('class/{id}/subjects', [CurriculumController::class, 'getSubjectsByClass']);
         Route::get('class/{id}/subject/{subject_id}', [CurriculumController::class, 'getSingleSubject']);
         //createSingleTopic
         Route::post('/topic/create-single-topic', [CurriculumController::class, 'createSingleTopic']);

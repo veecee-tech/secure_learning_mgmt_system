@@ -6,9 +6,7 @@ use App\Models\Topic;
 use App\Models\Subject;
 use App\Models\ClassLevel;
 use Illuminate\Http\Request;
-use App\Models\Student\Student;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -519,6 +517,7 @@ class CurriculumController extends BaseController
     * summary="Get all subjects and topics by class level",
     * tags={"Curriculum"},
     * security={{"Bearer":{}}},
+    * operationId="getSubjectsByClassID",
     * @OA\Parameter(
     * name="id",
     * in="path",
@@ -574,13 +573,7 @@ class CurriculumController extends BaseController
 
     public function getSubjectsByClass($id)
     {
-        $auth_user = Auth::user();
-        if($auth_user->role=="student"){
-            $auth_user_class_id = Student::where('user_id', $auth_user->id)->first()->class_level_id;
-            $subjects = Subject::with('topics')->where('class_level_id', $auth_user_class_id)->get();
-        }else{
-            $subjects = Subject::with('topics')->where('class_level_id', $id)->get();
-        }
+        $subjects = Subject::with('topics')->where('class_level_id', $id)->get();
         return $this->sendResponse($subjects, 'Subjects retrieved successfully.', 200);
     }
 
