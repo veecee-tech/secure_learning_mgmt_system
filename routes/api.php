@@ -110,6 +110,6 @@ Route::middleware('auth:api')->group(function () {
     //create route group for profile photo
     Route::group(['prefix' => 'profile-photo'], function () {
         Route::post('/upload-picture', [ProfilePictureController::class, 'upload']);
-        Route::get('/get/{user_id}', [ProfilePictureController::class, 'show']);
+        Route::get('/show-profile-picture', [ProfilePictureController::class, 'show']);
     });
 });

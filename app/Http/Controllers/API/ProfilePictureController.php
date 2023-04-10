@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -91,9 +92,37 @@ class ProfilePictureController extends Controller
         return response()->json(['message' => 'No profile picture found.']);
     }
 
-    public function show(Request $request, $id)
+    //create annotation for show profile picture
+
+    /**
+     * @OA\Get(
+     *    path="/api/profile-photo/show-profile-picture",
+     *   summary="Show profile picture",
+     *  tags={"Profile Picture"},
+     * security={{"Bearer":{}}},
+     * description="Show profile picture",
+     * operationId="showProfilePicture",
+     * 
+     * @OA\Response(
+     *  response=200,
+     * description="Success",
+     * @OA\JsonContent(
+     * @OA\Property(
+     * property="message",
+     * type="string",
+     * example="Profile picture uploaded successfully."
+     * )
+     * )
+     * 
+     * )
+     * )
+     * )    
+     */
+    public function show(Request $request)
     {
-        $profilePicture = Photo::where('user_id', $id)->first();
+
+        $user_id = Auth::user()->id;
+        $profilePicture = Photo::where('user_id', $user_id)->first();
 
         if (!$profilePicture) {
             abort(404);
