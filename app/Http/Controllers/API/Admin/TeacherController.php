@@ -834,8 +834,48 @@ class TeacherController extends BaseController
         return response()->download($filename, 'teachers.csv', $headers);
     }
 
+//generate annotation for the getLoggedInTeacher method
+    /**
+     * @OA\Get(
+     *    path="/api/teacher/get-logged-in-teacher",
+     *   summary="Get logged in teacher",
+     * tags={"Teachers"},
+     * security={{"Bearer":{}}},
+     * description="Get logged in teacher",
+     * operationId="getLoggedInTeacher",
+     * @OA\Response(
+     *   response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(
+     *   @OA\Property(property="success", type="boolean"),
+     * @OA\Property(property="message", type="string"),
+     * @OA\Property(
+     *     property="data",
+     *  type="object",
+     * @OA\Property(property="id", type="integer"),
+     * @OA\Property(property="teacher_id", type="string"),
+     * @OA\Property(property="fullname", type="string"),
+     * @OA\Property(property="class", type="string"),
+     * )
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Not found"
+     * )
+     * )
+     * )
+     * )
+     * )
+     * )
+     * )
+     */
     public function getLoggedInTeacher()
     {
+        if (Auth::user()->role != 'teacher') {
+            return $this->sendError('Error', 'You are not a teacher', 400);
+        }
+
         $teacher = Teacher::where('user_id', Auth::user()->id)->first();
         $success = [
             'teacher' => $teacher,

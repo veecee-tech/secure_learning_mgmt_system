@@ -939,7 +939,36 @@ class StudentController extends BaseController
         return $this->sendResponse($logs, 'User activity retrieved successfully.', 200);
     }
 
+//generate annotation for getLoggedInStudent() method (GET /get-logged-in-student)
+
+/**
+ * @OA\Get(
+ * path="/api/student/get-logged-in-student",
+ * summary="Get logged in student",
+ * description="Get logged in student",
+ * operationId="getLoggedInStudent",
+ * tags={"Students"},
+ *  security={{"Bearer":{}}},
+ * @OA\Response(
+ * response=200,
+ * description="Success",
+ * @OA\JsonContent(
+ * 
+ * @OA\Property(
+ * property="success",
+ * type="object")
+ * 
+ * )
+ * )
+ * )
+ * 
+ * 
+ * 
+ */
     public function getLoggedInStudent(){
+        if(Auth::user()->role != 'student'){
+            return $this->sendError('Error', 'You are not a student', 400);
+        }
         $student = Student::where('user_id', Auth::user()->id)->first();
         return $this->sendResponse($student, 'Student retrieved successfully.', 200);
     }
