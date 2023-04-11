@@ -938,4 +938,9 @@ class StudentController extends BaseController
         $logs = Log::all();
         return $this->sendResponse($logs, 'User activity retrieved successfully.', 200);
     }
+
+    public function getLoggedInStudent(){
+        $student = Student::where('user_id', Auth::user()->id)->first();
+        return $this->sendResponse($student, 'Student retrieved successfully.', 200);
+    }
 }

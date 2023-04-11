@@ -9,6 +9,7 @@ use App\Models\Teacher\Teacher;
 use App\Services\TwilioSmsSender;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\TeacherResource;
 use Illuminate\Support\Facades\Validator;
@@ -831,5 +832,15 @@ class TeacherController extends BaseController
         );
 
         return response()->download($filename, 'teachers.csv', $headers);
+    }
+
+    public function getLoggedInTeacher()
+    {
+        $teacher = Teacher::where('user_id', Auth::user()->id)->first();
+        $success = [
+            'teacher' => $teacher,
+        ];
+
+        return $this->sendResponse($success, 'Teacher retrieved successfully.', 200);
     }
 }
