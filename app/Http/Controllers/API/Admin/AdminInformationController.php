@@ -180,7 +180,7 @@ class AdminInformationController extends BaseController
      *    summary="Get admin information",
      *   description="Get admin information",
      *    operationId="showAdminInformation",
-     * security={{"bearer":{}}},
+     * security={{"Bearer":{}}},
      *    @OA\Response(
      *        response=200,
      *       description="successful operation",
