@@ -883,4 +883,52 @@ class TeacherController extends BaseController
 
         return $this->sendResponse($success, 'Teacher retrieved successfully.', 200);
     }
+
+    //generate annotation for the getTeacherClass method
+
+    /**
+     * @OA\Get(
+     *   path="/api/teacher/get-teacher-class",
+     *  summary="Get teacher class",
+     * tags={"Teachers"},
+     * security={{"Bearer":{}}},
+     * description="Get teacher class",
+     * operationId="getTeacherClass",
+     * @OA\Response(
+     *  response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(
+     * @OA\Property(property="success", type="boolean"),
+     * @OA\Property(property="message", type="string"),
+     * @OA\Property(
+     *    property="data",
+     * type="object",
+     * @OA\Property(property="my_class", type="string"),
+     * @OA\Property(property="class_id", type="integer"),
+     * )
+     * 
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Not found"
+     * )
+     *)
+     * 
+     * 
+     */
+    public function getTeacherClass()
+    {
+        $teacher = Teacher::where('user_id', Auth::user()->id)->first();
+        if (!$teacher) {
+            return $this->sendError('Error', 'You are not a teacher', 400);
+        }
+        $teacher_class = ClassLevel::where('id', $teacher->class_level_id)->first();
+        $success = [
+            'my_class' => $teacher_class,
+            'class_id' => $teacher_class->id,
+        ];
+
+        return $this->sendResponse($success, 'Teacher class retrieved successfully.', 200);
+    }
 }

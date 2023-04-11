@@ -98,6 +98,8 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'teacher', 'namespace' => 'Teacher'], function () {
         //get logged in teacher
         Route::get('/get-logged-in-teacher', [TeacherController::class, 'getLoggedInTeacher']);
+        //get teacher class
+        Route::get('/get-teacher-class', [TeacherController::class, 'getTeacherClass']);
     });
 
     Route::group(['prefix' => 'security', 'namespace' => 'Security'], function () {
@@ -115,6 +117,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/read/subject/{subject_id}/topics', [CurriculumController::class, 'getAllTopicsBySubject']);
         //get logged in student
         Route::get('/get-logged-in-student', [StudentController::class, 'getLoggedInStudent']);
+        Route::get('/get-student-class', [StudentController::class, 'getStudentClass']);
     });
 
     //create route group for profile photo

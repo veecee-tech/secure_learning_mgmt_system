@@ -972,4 +972,50 @@ class StudentController extends BaseController
         $student = Student::where('user_id', Auth::user()->id)->first();
         return $this->sendResponse($student, 'Student retrieved successfully.', 200);
     }
+
+    /**
+     * @OA\Get(
+     *   path="/api/student/get-student-class",
+     *  summary="Get student class",
+     * tags={"Students"},
+     * security={{"Bearer":{}}},
+     * description="Get student class",
+     * operationId="getStudentClass",
+     * @OA\Response(
+     *  response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(
+     * @OA\Property(property="success", type="boolean"),
+     * @OA\Property(property="message", type="string"),
+     * @OA\Property(
+     *    property="data",
+     * type="object",
+     * @OA\Property(property="my_class", type="string"),
+     * @OA\Property(property="class_id", type="integer"),
+     * )
+     * 
+     * )
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Not found"
+     * )
+     *)
+     * 
+     * 
+     */
+    public function getStudentClass()
+    {
+        $student = Student::where('user_id', Auth::user()->id)->first();
+        if (!$student) {
+            return $this->sendError('Error', 'You are not a student', 400);
+        }
+        $student_class = ClassLevel::where('id', $student->class_level_id)->first();
+        $success = [
+            'my_class' => $student_class,
+            'class_id' => $student_class->id,
+        ];
+
+        return $this->sendResponse($success, 'Student class retrieved successfully.', 200);
+    }
 }
