@@ -11,6 +11,7 @@ use App\Http\Controllers\Security\SecurityController;
 use App\Http\Controllers\API\ProfilePictureController;
 use App\Http\Controllers\API\Admin\DashboardController;
 use App\Http\Controllers\API\Admin\CurriculumController;
+use App\Http\Controllers\API\Admin\AdminInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,12 @@ Route::middleware('auth:api')->group(function () {
 
 
         Route::get('subjects/all', [CurriculumController::class, 'allSubjects']);
+
+        //AdminInformationCntrollerRoutes
+        Route::get('/get-admin-information', [AdminInformationController::class, 'show']);
+        Route::post('/update-admin-information', [AdminInformationController::class, 'updateAdminInformation']);
+        //store admin information
+        Route::post('/store-admin-information', [AdminInformationController::class, 'store']);
 
     });
 
