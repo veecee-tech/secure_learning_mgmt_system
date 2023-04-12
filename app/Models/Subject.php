@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Topic;
 use App\Models\ClassLevel;
+use App\Models\PerformanceTracking;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -47,5 +48,10 @@ class Subject extends Model
     public function topics(): HasMany
     {
         return $this->hasMany(Topic::class);
+    }
+
+    public function performanceTrackings(): HasMany
+    {
+        return $this->hasMany(PerformanceTracking::class);
     }
 }

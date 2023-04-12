@@ -4,7 +4,9 @@ namespace App\Models\Student;
 
 use App\Models\User;
 use App\Models\ClassLevel;
+use App\Models\PerformanceTracking;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -96,6 +98,11 @@ class Student extends Model
     public function classLevel(): BelongsTo
     {
         return $this->belongsTo(ClassLevel::class);
+    }
+
+    public function performanceTrackings(): HasMany
+    {
+        return $this->hasMany(PerformanceTracking::class);
     }
 
 }
