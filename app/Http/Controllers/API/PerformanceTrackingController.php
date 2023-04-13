@@ -102,17 +102,20 @@ class PerformanceTrackingController extends BaseController
 
         $time_spent = $request->time_spent;
 
-        $record = $student->performanceTrackings()->where('subject_id', $subject->id)->first();
+        $record = $subject->performanceTrackings()->where('subject_id', $subject->id)->first();
 
-        if($record){
+        // dd($record);
+        if($record && $record->created_at->isToday()){
             $record->time_spent += $time_spent;
             $record->update([
-                'time_spent' => $record->time_spent
+                'time_spent' => $record->time_spent,
+                'student_id' => $student->id,
             ]);
         }else{
             $student->performanceTrackings()->create([
                 'subject_id' => $subject->id,
-                'time_spent' => $time_spent
+                'time_spent' => $time_spent,
+                'student_id' => $student->id,
             ]);
         }
 
