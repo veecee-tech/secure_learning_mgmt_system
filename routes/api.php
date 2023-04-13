@@ -11,6 +11,7 @@ use App\Http\Controllers\Security\SecurityController;
 use App\Http\Controllers\API\ProfilePictureController;
 use App\Http\Controllers\API\Admin\DashboardController;
 use App\Http\Controllers\API\Admin\CurriculumController;
+use App\Http\Controllers\API\PerformanceTrackingController;
 use App\Http\Controllers\API\Admin\AdminInformationController;
 
 /*
@@ -95,7 +96,7 @@ Route::middleware('auth:api')->group(function () {
 
         //AdminInformationCntrollerRoutes
         Route::get('/get-admin-information', [AdminInformationController::class, 'show']);
-        Route::post('/update-admin-information', [AdminInformationController::class, 'updateAdminInformation']);
+        Route::patch('/update-admin-information/{id}', [AdminInformationController::class, 'updateAdminInformation']);
         //store admin information
         Route::post('/store-admin-information', [AdminInformationController::class, 'store']);
 
@@ -131,5 +132,9 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'profile-photo'], function () {
         Route::post('/upload-picture', [ProfilePictureController::class, 'upload']);
         Route::get('/show-profile-picture', [ProfilePictureController::class, 'show']);
+    });
+
+    Route::group(['prefix' => 'performance'], function () {
+        Route::post('/store-performance-tracking/{subject_id}/{student_id}', [PerformanceTrackingController::class, 'store']);
     });
 });
