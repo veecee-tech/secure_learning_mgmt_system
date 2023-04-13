@@ -136,5 +136,6 @@ Route::middleware('auth:api')->group(function () {
 
     Route::group(['prefix' => 'performance'], function () {
         Route::post('/store-performance-tracking/{subject_id}/{student_id}', [PerformanceTrackingController::class, 'store']);
+        Route::get('/get-all-performance-tracking-records-by-days-and-subject-id/{id}/{no_of_days}', [PerformanceTrackingController::class, 'getAllPerformanceTrackingRecordsByDaysAndSubjectID']);
     });
 });
